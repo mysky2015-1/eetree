@@ -15,10 +15,9 @@ class CreateAdminsTable extends Migration
     {
         Schema::create('admins', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('username', 190)->unique();
+            $table->string('name', 190)->unique();
             $table->string('password', 60);
-            $table->string('api_token', 80)->unique();
-            $table->string('name');
+            $table->text('last_token')->nullable()->comment('登陆时的token');
             $table->string('avatar')->nullable();
             $table->rememberToken();
             $table->timestamps();

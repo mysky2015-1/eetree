@@ -1,6 +1,6 @@
 <?php
 
-$factory->define(App\Admin::class, function (Faker\Generator $faker) {
+$factory->define(App\Models\Admin::class, function (Faker\Generator $faker) {
     static $password;
 
     $name = $faker->firstName;
@@ -9,6 +9,5 @@ $factory->define(App\Admin::class, function (Faker\Generator $faker) {
         'name' => $name,
         'password' => $password ?: $password = bcrypt('secret'),
         'remember_token' => str_random(10),
-        'api_token' => str_random(60),
     ];
 });

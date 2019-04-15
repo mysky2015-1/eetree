@@ -1,11 +1,12 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Admin extends Authenticatable
+class User extends Authenticatable
 {
     use Notifiable;
 
@@ -15,7 +16,7 @@ class Admin extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'password',
+        'mobile', 'name', 'nickname', 'password',
     ];
 
     /**

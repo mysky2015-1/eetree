@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
@@ -35,5 +36,28 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+    /**
+     * Attempt to log the user into the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return bool
+     */
+    protected function attemptLogin(Request $request)
+    {
+        $account = $request->input('account');
+        $password = $request->input('password');
+        if (preg_match('/^1[0-9]{10}$/', $account)) {
+            $field = 'mobile';
+        } else {
+            $field = 'name';
+        }
+        return $this->guard()->attempt([ $field => $account, 'password' => $password ], $request->filled('remember'));
+    }
+
+    public function username()
+    {
+        return 'account';
     }
 }
