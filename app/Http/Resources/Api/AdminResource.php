@@ -2,9 +2,7 @@
 
 namespace App\Http\Resources\Api;
 
-use Illuminate\Http\Resources\Json\JsonResource;
-
-class AdminResource extends JsonResource
+class AdminResource extends BaseResource
 {
     /**
      * Transform the resource into an array.
@@ -14,6 +12,7 @@ class AdminResource extends JsonResource
      */
     public function toArray($request)
     {
+        return ['data' => $this->collection];
         return [
             'id' => $this->id,
             'name' => $this->name,

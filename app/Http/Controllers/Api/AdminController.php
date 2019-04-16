@@ -18,7 +18,7 @@ class AdminController extends Controller
     {
         //3个用户为一页
         $admins = Admin::paginate(3);
-        return AdminResource::collection($admins);
+        return new AdminResource($admins);
     }
 
     //返回单一用户信息
