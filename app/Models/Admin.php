@@ -47,6 +47,7 @@ class Admin extends Authenticatable implements JWTSubject
     protected $hidden = [
         'password'
     ];
+
     //将密码进行加密
     public function setPasswordAttribute($value)
     {
