@@ -12,27 +12,40 @@
  */
 
 Route::namespace ('Api')->middleware('cors')->group(function () {
-    Route::middleware('admin.guard')->group(function () {
+    // Route::middleware('admin.guard')->prefix('admin')->group(function () {
+    Route::middleware('admin.guard')->prefix('admin')->group(function () {
         //管理员登录
-        Route::post('/admin/login', 'AdminController@login')->name('admin.login');
+        Route::post('/login', 'AdminController@login')->name('admin.login');
         Route::middleware('admin.refresh')->group(function () {
             //管理员列表
             Route::get('/admins', 'AdminController@index')->name('admin.index');
             //管理员信息
             Route::get('/admins/{admin}', 'AdminController@show')->name('admin.show');
-            //保存管理员
+            //创建管理员
             Route::post('/admins', 'AdminController@store')->name('admin.store');
             //删除管理员
             Route::delete('/admins/{admin}', 'AdminController@delete')->name('admin.delete');
             //当前管理员信息
-            Route::get('/admin/info', 'AdminController@info')->name('admin.info');
+            Route::get('/info', 'AdminController@info')->name('admin.info');
             //管理员退出
-            Route::get('/admin/logout', 'AdminController@logout')->name('admin.logout');
+            Route::get('/logout', 'AdminController@logout')->name('admin.logout');
 
             Route::get('/admin_menus', 'AdminMenuController@index')->name('adminmenu.index');
-            Route::get('/admin_menus/{menu}', 'AdminMenuController@show')->name('adminmenu.show');
             Route::post('/admin_menus', 'AdminMenuController@store')->name('adminmenu.store');
+            Route::post('/admin_menus/{menu}', 'AdminMenuController@update')->name('adminmenu.update');
             Route::delete('/admin_menus/{menu}', 'AdminMenuController@delete')->name('adminmenu.delete');
+
+            Route::get('/admin_permissions', 'AdminPermissionController@index')->name('adminpermission.index');
+            Route::get('/admin_permissions/{permission}', 'AdminPermissionController@show')->name('adminpermission.show');
+            Route::post('/admin_permissions', 'AdminPermissionController@store')->name('adminpermission.store');
+            Route::post('/admin_permissions/{permission}', 'AdminPermissionController@update')->name('adminpermission.update');
+            Route::delete('/admin_permissions/{permission}', 'AdminPermissionController@delete')->name('adminpermission.delete');
+
+            Route::get('/admin_roles', 'AdminRoleController@index')->name('adminrole.index');
+            Route::get('/admin_roles/{role}', 'AdminRoleController@show')->name('adminrole.show');
+            Route::post('/admin_roles', 'AdminRoleController@store')->name('adminrole.store');
+            Route::post('/admin_roles/{role}', 'AdminRoleController@update')->name('adminrole.update');
+            Route::delete('/admin_roles/{role}', 'AdminRoleController@delete')->name('adminrole.delete');
         });
     });
 });

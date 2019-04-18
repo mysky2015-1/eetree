@@ -16,11 +16,11 @@ class AdminController extends Controller
     public function index(Request $request)
     {
         $name = $request->input('name');
+        $where = [['deleted', 0]];
         if (!empty($name)) {
-            $admins = Admin::where('name', 'like', '%' . $name . '%')->paginate(config('eetree.limit'));
-        } else {
-            $admins = Admin::paginate(config('eetree.limit'));
+            $where[] = ['name', 'like', '%' . $name . '%'];
         }
+        $admins = Admin::where($where)->paginate(config('eetree.limit'));
         return $this->success(AdminResource::collection($admins));
     }
 
@@ -33,7 +33,18 @@ class AdminController extends Controller
     //删除用户
     public function delete(Admin $admin)
     {
-        $admin->delete();
+        $admin->update(['deleted' => 1]);
+        return $this->success();
+    }
+
+    public function update(Admin $admin, AdminRequest $request)
+    {
+        $permission_ids = $request->input('permission_id');
+
+        \DB::transaction(function () use ($admin, $request) {
+            $admin->update($request->validated());
+            $admin->roles()->sync($role_ids);
+        });
         return $this->success();
     }
 

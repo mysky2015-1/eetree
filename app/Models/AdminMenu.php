@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class AdminMenu extends Model
 {
     protected $fillable = [
-        'parent_id', 'title', 'uri',
+        'parent_id', 'title', 'uri', 'order',
     ];
 
     /**

@@ -4,7 +4,7 @@ namespace App\Http\Resources\Api;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class AdminMenuResource extends JsonResource
+class AdminPermissionResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,10 +16,9 @@ class AdminMenuResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'title' => $this->title,
-            'parent_id' => $this->parent_id,
-            'order' => $this->order,
-            'children' => $this->when($this->children && $this->children->isNotEmpty(), AdminMenuResource::collection($this->children)),
+            'name' => $this->name,
+            'http_method' => $this->http_method,
+            'http_path' => $this->http_path,
         ];
     }
 }

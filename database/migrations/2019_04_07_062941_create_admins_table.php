@@ -19,6 +19,7 @@ class CreateAdminsTable extends Migration
             $table->string('password', 60);
             $table->text('last_token')->nullable()->comment('登陆时的token');
             $table->string('avatar')->nullable();
+            $table->unsignedTinyInteger('deleted')->default(0);
             $table->rememberToken();
             $table->timestamps();
         });
@@ -26,14 +27,12 @@ class CreateAdminsTable extends Migration
         Schema::create('admin_roles', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 50)->unique();
-            $table->string('slug', 50);
             $table->timestamps();
         });
 
         Schema::create('admin_permissions', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 50)->unique();
-            $table->string('slug', 50);
             $table->string('http_method')->nullable();
             $table->text('http_path')->nullable();
             $table->timestamps();

@@ -6,6 +6,7 @@ class AdminRequest extends FormRequest
 {
     public function rules()
     {
+        $model = $this->route('admin');
         switch ($this->method()) {
             case 'GET':
                 return [
@@ -13,7 +14,7 @@ class AdminRequest extends FormRequest
                 ];
             case 'POST':
                 return [
-                    'name' => ['required', 'max:12', 'unique:admins,name'],
+                    'name' => ['required', 'max:12', 'unique:admins,name,' . $model->id],
                     'password' => ['required', 'max:16', 'min:5'],
                 ];
             case 'PUT':
