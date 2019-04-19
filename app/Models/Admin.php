@@ -9,6 +9,8 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 class Admin extends Authenticatable implements JWTSubject
 {
     use Notifiable;
+
+    protected $table = 'admin';
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *
@@ -28,8 +30,6 @@ class Admin extends Authenticatable implements JWTSubject
     {
         return [];
     }
-
-    protected $table = 'admins';
     /**
      * The attributes that are mass assignable.
      *
@@ -66,9 +66,11 @@ class Admin extends Authenticatable implements JWTSubject
 
     public function allPermissions()
     {
-        $permissions = \Illuminate\Support\Facades\Redis::get('admin:permissions:' . $this->id);
+        $permissions = false; //TODO\Illuminate\Support\Facades\Redis::get('admin:permissions:' . $this->id);
         if (empty($permissions)) {
-            $permissions = $this->roles()->with('permissions')->get()->pluck('permissions')->flatten()->map(function ($item, $key) {
+            $permissions = $this->roles()->with('permissions')->get()->pluck('permissions')->flatten()->unique(function ($item) {
+                return $item->id;
+            })->map(function ($item, $key) {
                 return $item->only(['name', 'http_method', 'http_path']);
             });
             \Illuminate\Support\Facades\Redis::set('admin:permissions:' . $this->id, $permissions);

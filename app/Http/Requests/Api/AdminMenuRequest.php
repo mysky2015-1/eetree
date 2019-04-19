@@ -12,12 +12,12 @@ class AdminMenuRequest extends FormRequest
                     'id' => ['required'],
                 ];
             case 'POST':
+            case 'PUT':
                 return [
                     'parent_id' => ['required', 'numeric'],
                     'title' => ['required'],
                     'uri' => ['required'],
                 ];
-            case 'PUT':
             case 'PATCH':
             case 'DELETE':
             default:

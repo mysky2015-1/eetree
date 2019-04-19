@@ -5,12 +5,11 @@ namespace App\Http\Middleware\Api;
 use App\Jobs\Api\SaveLastTokenJob;
 use Auth;
 use Closure;
-use Tymon\JWTAuth\Exceptions\JWTException;
-use Tymon\JWTAuth\Exceptions\TokenInvalidException;
-use Tymon\JWTAuth\Facades\JWTAuth;
-use Tymon\JWTAuth\Http\Middleware\BaseMiddleware;
-use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
+use Tymon\JWTAuth\Exceptions\JWTException;
+use Tymon\JWTAuth\Exceptions\TokenExpiredException;
+use Tymon\JWTAuth\Exceptions\TokenInvalidException;
+use Tymon\JWTAuth\Http\Middleware\BaseMiddleware;
 
 // 注意，我们要继承的是 jwt 的 BaseMiddleware
 class RefreshAdminTokenMiddleware extends BaseMiddleware
@@ -36,13 +35,13 @@ class RefreshAdminTokenMiddleware extends BaseMiddleware
         $present_guard = Auth::getDefaultDriver();
 
         //获取当前token
-        $token=Auth::getToken();
+        $token = Auth::getToken();
 
         //即使过期了，也能获取到token里的 载荷 信息。
         $payload = Auth::manager()->getJWTProvider()->decode($token->get());
         //如果不包含guard字段或者guard所对应的值与当前的guard守护值不相同
         //证明是不属于当前guard守护的token
-        if(empty($payload['guard'])||$payload['guard']!=$present_guard){
+        if (empty($payload['guard']) || $payload['guard'] != $present_guard) {
             throw new TokenInvalidException();
         }
         //使用 try 包裹，以捕捉 token 过期所抛出的 TokenExpiredException  异常
@@ -58,12 +57,13 @@ class RefreshAdminTokenMiddleware extends BaseMiddleware
             try {
                 // 刷新用户的 token
                 $token = $this->auth->refresh();
+
                 // 使用一次性登录以保证此次请求的成功
                 Auth::onceUsingId($this->auth->manager()->getPayloadFactory()->buildClaimsCollection()->toPlainArray()['sub']);
 
                 //刷新了token，将token存入数据库
                 $user = Auth::user();
-                SaveLastTokenJob::dispatch($user,$token);
+                SaveLastTokenJob::dispatch($user, $token);
 
             } catch (JWTException $exception) {
                 // 如果捕获到此异常，即代表 refresh 也过期了，用户无法刷新令牌，需要重新登录。

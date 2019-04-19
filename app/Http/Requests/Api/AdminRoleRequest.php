@@ -6,7 +6,6 @@ class AdminRoleRequest extends FormRequest
 {
     public function rules()
     {
-        $model = $this->route('role');
         switch ($this->method()) {
             case 'GET':
                 return [
@@ -14,9 +13,12 @@ class AdminRoleRequest extends FormRequest
                 ];
             case 'POST':
                 return [
-                    'name' => ['required', 'max:50', 'unique:admin_roles,name,' . $model->id],
+                    'name' => ['required', 'max:50', 'unique:admin_role,name'],
                 ];
             case 'PUT':
+                return [
+                    'name' => ['required', 'max:50', 'unique:admin_role,name,' . $this->role->id],
+                ];
             case 'PATCH':
             case 'DELETE':
             default:

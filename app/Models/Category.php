@@ -4,12 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class AdminMenu extends Model
+class Category extends Model
 {
-    protected $table = 'admin_menu';
+    protected $table = 'category';
 
     protected $fillable = [
-        'parent_id', 'title', 'uri', 'order',
+        'parent_id', 'name', 'order',
     ];
 
     /**

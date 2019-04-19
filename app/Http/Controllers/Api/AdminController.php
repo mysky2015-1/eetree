@@ -39,10 +39,12 @@ class AdminController extends Controller
 
     public function update(Admin $admin, AdminRequest $request)
     {
-        $permission_ids = $request->input('permission_id');
-
         \DB::transaction(function () use ($admin, $request) {
-            $admin->update($request->validated());
+            $role_ids = $request->input('role_id');
+            $data = $request->validated();
+            if (!empty($data)) {
+                $admin->update($data);
+            }
             $admin->roles()->sync($role_ids);
         });
         return $this->success();

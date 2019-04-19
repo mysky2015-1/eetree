@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Api;
 
-class AdminPermissionRequest extends FormRequest
+class CategoryRequest extends FormRequest
 {
     public function rules()
     {
@@ -13,15 +13,13 @@ class AdminPermissionRequest extends FormRequest
                 ];
             case 'POST':
                 return [
-                    'name' => ['required', 'max:50', 'unique:admin_permission,name'],
-                    'http_method' => ['required'],
-                    'http_path' => ['required'],
+                    'parent_id' => ['required', 'numeric'],
+                    'name' => ['required', 'unique:category,name'],
                 ];
             case 'PUT':
                 return [
-                    'name' => ['required', 'max:50', 'unique:admin_permission,name,' . $this->permission->id],
-                    'http_method' => ['required'],
-                    'http_path' => ['required'],
+                    'parent_id' => ['required', 'numeric'],
+                    'name' => ['required', 'unique:category,name,' . $this->category->id],
                 ];
             case 'PATCH':
             case 'DELETE':
@@ -34,8 +32,7 @@ class AdminPermissionRequest extends FormRequest
     {
         return [
             'name.required' => '名称不能为空',
-            'http_method.required' => 'Http方法不能为空！',
-            'http_path.required' => 'Http路径不能为空！',
+            'parent_id.required' => '层级不能为空！',
         ];
     }
 }

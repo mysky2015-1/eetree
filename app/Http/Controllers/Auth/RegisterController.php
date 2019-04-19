@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Models\User;
 use App\Http\Controllers\Controller;
+use App\Models\User;
+use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Foundation\Auth\RegistersUsers;
 
 class RegisterController extends Controller
 {
@@ -19,7 +19,7 @@ class RegisterController extends Controller
     | validation and creation. By default this controller uses a trait to
     | provide this functionality without requiring any additional code.
     |
-    */
+     */
 
     use RegistersUsers;
 
@@ -49,7 +49,7 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'mobile' => ['required', 'string', 'regex:/^1[0-9]{10}$/', 'max:255', 'unique:users'],
+            'mobile' => ['required', 'string', 'regex:/^1[0-9]{10}$/', 'max:255', 'unique:user'],
             'name' => ['required', 'string', 'regex:/^[a-zA-Z][a-zA-Z_\-]+$/', 'max:255'],
             'nickname' => ['required', 'string', 'max:255'],
             'password' => ['required', 'string', 'min:8'],
