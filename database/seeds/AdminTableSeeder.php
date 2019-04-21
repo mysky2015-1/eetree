@@ -1,8 +1,9 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Carbon\Carbon;
 
-class AdminsTableSeeder extends Seeder
+class AdminTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,8 +12,14 @@ class AdminsTableSeeder extends Seeder
      */
     public function run()
     {
-        factory('App\Models\Admin', 3)->create([
+        // factory('App\Models\Admin', 3)->create([
+        //     'password' => bcrypt('admin'),
+        // ]);
+        DB::table('admin')->insert([
+            'name' => 'admin',
             'password' => bcrypt('admin'),
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
         ]);
     }
 }
