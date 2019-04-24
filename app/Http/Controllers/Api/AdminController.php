@@ -6,6 +6,7 @@ use App\Http\Requests\Api\AdminRequest;
 use App\Http\Resources\Api\AdminResource;
 use App\Jobs\Api\SaveLastTokenJob;
 use App\Models\Admin;
+use App\Models\AdminMenu;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
@@ -54,6 +55,8 @@ class AdminController extends Controller
     public function info()
     {
         $admin = Auth::user();
+        $menus = AdminMenu::orderBy('order', 'asc')->get();
+        $menus = Tree::make($menus);
         return $this->success(new AdminResource($admin));
     }
 
@@ -81,7 +84,7 @@ class AdminController extends Controller
                 }
             }
             SaveLastTokenJob::dispatch($user, $token);
-            return $this->setStatusCode(201)->success(['token' => 'bearer ' . $token]);
+            return $this->success(['token' => 'bearer ' . $token]);
         }
         return $this->failed('账号或密码错误', 400);
     }
