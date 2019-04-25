@@ -88,7 +88,7 @@ class AdminPermissionMiddleware
             return strtoupper($method);
         });
 
-        return $method->isEmpty() || $method->contains($request->method());
+        return $method->isEmpty() || $method->contains('ANY') || $method->contains($request->method());
     }
 
     /**

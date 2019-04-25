@@ -33,12 +33,12 @@ class AdminRole extends Model
     }
 
     /**
-     * A role belongs to many menus.
+     * A role has many menus.
      *
-     * @return BelongsToMany
+     * @return hasMany
      */
     public function menus()
     {
-        return $this->belongsToMany('App\Models\AdminMenu', 'admin_role_menu', 'role_id', 'menu_id')->withTimestamps();
+        return $this->hasMany('App\Models\AdminRoleMenu', 'role_id');
     }
 }

@@ -19,7 +19,7 @@ Route::namespace ('Api')->middleware('cors')->group(function () {
         //创建管理员
         Route::post('/admins', 'AdminController@store')->name('admin.store');
         Route::put('/admins/{admin}', 'AdminController@update')->name('admin.update');
-        Route::middleware(['admin.refresh'])->group(function () {
+        Route::middleware(['admin.refresh', 'admin.permission'])->group(function () {
             //管理员列表
             Route::get('/admins', 'AdminController@index')->name('admin.index');
             //管理员信息
