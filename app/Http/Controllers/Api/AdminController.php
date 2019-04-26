@@ -33,6 +33,9 @@ class AdminController extends Controller
     //删除用户
     public function delete(Admin $admin)
     {
+        if ($admin->id == 1) {
+            return $this->failed('该用户是超级管理员');
+        }
         $admin->update(['deleted' => 1]);
         return $this->success();
     }
@@ -40,8 +43,11 @@ class AdminController extends Controller
     public function update(Admin $admin, AdminRequest $request)
     {
         \DB::transaction(function () use ($admin, $request) {
-            $role_ids = $request->input('role_id');
+            $role_ids = $request->input('roles');
             $data = $request->validated();
+            if (isset($data['password']) && empty($data['password'])) {
+                unset($data['password']);
+            }
             if (!empty($data)) {
                 $admin->update($data);
             }
@@ -60,8 +66,8 @@ class AdminController extends Controller
     //用户注册
     public function store(AdminRequest $request)
     {
-        Admin::create($request->all());
-        return $this->created();
+        $admin = Admin::create($request->all());
+        return $this->success(new AdminResource($admin));
     }
 
     //用户登录

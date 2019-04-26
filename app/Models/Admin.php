@@ -37,7 +37,7 @@ class Admin extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'name', 'password',
+        'name', 'password', 'deleted',
     ];
 
     /**

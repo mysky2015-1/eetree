@@ -7,10 +7,12 @@ return [
             'path' => '/adminuser',
             'component' => 'Layout',
             'children' => [
-                'path' => 'index',
-                'component' => 'adminuser_index',
-                'name' => 'adminuser',
-                'meta' => ['title' => 'adminuser', 'icon' => 'lock'],
+                [
+                    'path' => 'list',
+                    'component' => 'adminuser_list',
+                    'name' => 'adminuser',
+                    'meta' => ['title' => 'adminuser', 'icon' => 'lock'],
+                ],
             ],
         ],
         [
@@ -18,10 +20,12 @@ return [
             'path' => '/permission',
             'component' => 'Layout',
             'children' => [
-                'path' => 'index',
-                'component' => 'permission_index',
-                'name' => 'permission',
-                'meta' => ['title' => 'permission', 'icon' => 'lock'],
+                [
+                    'path' => 'list',
+                    'component' => 'permission_list',
+                    'name' => 'permission',
+                    'meta' => ['title' => 'permission', 'icon' => 'lock'],
+                ],
             ],
         ],
     ],

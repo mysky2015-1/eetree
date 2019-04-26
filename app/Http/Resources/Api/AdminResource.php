@@ -3,6 +3,7 @@
 namespace App\Http\Resources\Api;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\URL;
 
 class AdminResource extends JsonResource
 {
@@ -14,10 +15,22 @@ class AdminResource extends JsonResource
      */
     public function toArray($request)
     {
-        return [
+        $row = [
             'id' => $this->id,
             'name' => $this->name,
-            'menus' => $this->roleMenus(),
+            'avatar' => URL::asset('img/default-avatar.gif'),
         ];
+        $routeName = $request->route()->getName();
+        if ($routeName == 'admin.info') {
+            $row['menus'] = $this->roleMenus();
+        } elseif ($routeName == 'admin.list') {
+            $row['created_at'] = $this->created_at->format('Y-m-d H:i:s');
+            $row['roles'] = $this->roles->map(function ($item, $key) {
+                return $item->only(['id', 'name']);
+            });
+        } elseif ($routeName == 'admin.store') {
+            $row['created_at'] = $this->created_at->format('Y-m-d H:i:s');
+        }
+        return $row;
     }
 }
