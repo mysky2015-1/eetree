@@ -24,11 +24,13 @@ class AdminPermissionMiddleware
     {
         if (!$this->ignorePassThrough($request)) {
             $user = Auth::user();
-            if (!$user->allPermissions()->first(function ($permission) use ($request) {
-                return $this->shouldPassThrough($permission, $request);
-            })) {
-                return $this->failed($user->allPermissions(), 403); //TODO
-                return $this->failed('No permission', 403);
+            if ($user->id != 1) {
+                if (!$user->allPermissions()->first(function ($permission) use ($request) {
+                    return $this->shouldPassThrough($permission, $request);
+                })) {
+                    return $this->failed($user->allPermissions(), 403); //TODO
+                    return $this->failed('No permission', 403);
+                }
             }
         }
         return $next($request);

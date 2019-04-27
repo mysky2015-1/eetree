@@ -18,11 +18,11 @@ class AdminResource extends JsonResource
         $row = [
             'id' => $this->id,
             'name' => $this->name,
-            'avatar' => URL::asset('img/default-avatar.gif'),
         ];
         $routeName = $request->route()->getName();
         if ($routeName == 'admin.info') {
             $row['menus'] = $this->roleMenus();
+            $row['avatar'] = URL::asset('img/default-avatar.gif');
         } elseif ($routeName == 'admin.list') {
             $row['created_at'] = $this->created_at->format('Y-m-d H:i:s');
             $row['roles'] = $this->roles->map(function ($item, $key) {

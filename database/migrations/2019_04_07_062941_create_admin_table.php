@@ -38,16 +38,6 @@ class CreateAdminTable extends Migration
             $table->timestamps();
         });
 
-        Schema::create('admin_menu', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('parent_id')->default(0);
-            $table->integer('order')->default(0);
-            $table->string('title', 50);
-            $table->string('uri', 50)->nullable();
-
-            $table->timestamps();
-        });
-
         Schema::create('admin_role_user', function (Blueprint $table) {
             $table->integer('role_id');
             $table->integer('user_id');
@@ -80,7 +70,6 @@ class CreateAdminTable extends Migration
         Schema::dropIfExists('admin');
         Schema::dropIfExists('admin_role');
         Schema::dropIfExists('admin_permission');
-        Schema::dropIfExists('admin_menu');
         Schema::dropIfExists('admin_role_user');
         Schema::dropIfExists('admin_role_permission');
         Schema::dropIfExists('admin_role_menu');
