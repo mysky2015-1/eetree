@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Api;
 
 use App\Helpers\Tree;
 use App\Http\Requests\Api\AdminMenuRequest;
-use App\Http\Resources\Api\AdminMenuResource;
 use App\Models\AdminMenu;
 use DB;
 use Illuminate\Http\Request;
@@ -14,9 +13,11 @@ class AdminMenuController extends Controller
     //返回菜单列表
     public function index(Request $request)
     {
-        $menus = AdminMenu::orderBy('order', 'asc')->get();
-        $menus = Tree::make($menus);
-        return $this->success(AdminMenuResource::collection($menus));
+        $allMenus = config('eetree.menus');
+        return $this->success($allMenus);
+        // $menus = AdminMenu::orderBy('order', 'asc')->get();
+        // $menus = Tree::make($menus);
+        // return $this->success(AdminMenuResource::collection($menus));
     }
 
     //删除菜单

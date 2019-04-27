@@ -12,7 +12,8 @@ class AdminPermissionController extends Controller
     //返回菜单列表
     public function index(Request $request)
     {
-        $permissions = AdminPermission::paginate(config('eetree.limit'));
+        // $permissions = AdminPermission::paginate(config('eetree.limit'));
+        $permissions = AdminPermission::get();
         return $this->success(AdminPermissionResource::collection($permissions));
     }
 
@@ -32,13 +33,13 @@ class AdminPermissionController extends Controller
 
     public function store(AdminPermissionRequest $request)
     {
-        AdminPermission::create($request->all());
-        return $this->created();
+        $permission = AdminPermission::create($request->validated());
+        return $this->success(new AdminPermissionResource($permission));
     }
 
     public function update(AdminPermission $permission, AdminPermissionRequest $request)
     {
-        $permission->update($request->all());
+        $permission->update($request->validated());
         return $this->success();
     }
 }

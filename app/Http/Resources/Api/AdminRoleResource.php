@@ -14,9 +14,19 @@ class AdminRoleResource extends JsonResource
      */
     public function toArray($request)
     {
-        return [
+        $row = [
             'id' => $this->id,
             'name' => $this->name,
         ];
+        $routeName = $request->route()->getName();
+        if ($routeName == 'adminrole.index') {
+            $row['permissions'] = $this->permissions->map(function ($item, $key) {
+                return $item->only(['id', 'name']);
+            });
+            $row['menus'] = $this->menus->map(function ($item, $key) {
+                return $item->only(['menu_id']);
+            });
+        }
+        return $row;
     }
 }

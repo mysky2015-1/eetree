@@ -66,7 +66,7 @@ class AdminController extends Controller
     //用户注册
     public function store(AdminRequest $request)
     {
-        $admin = Admin::create($request->all());
+        $admin = Admin::create($request->validated());
         return $this->success(new AdminResource($admin));
     }
 

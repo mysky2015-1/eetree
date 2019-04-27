@@ -16,12 +16,12 @@ Route::namespace ('Api')->middleware('cors')->group(function () {
     Route::middleware('admin.guard')->prefix('admin')->group(function () {
         //管理员登录
         Route::post('/login', 'AdminController@login')->name('admin.login');
-        Route::put('/admins/{admin}', 'AdminController@update')->name('admin.update');
         Route::middleware(['admin.refresh', 'admin.permission'])->group(function () {
             //管理员列表
             Route::get('/admins', 'AdminController@index')->name('admin.list');
             //创建管理员
             Route::post('/admins', 'AdminController@store')->name('admin.store');
+            Route::put('/admins/{admin}', 'AdminController@update')->name('admin.update');
             //管理员信息
             Route::get('/admins/{admin}', 'AdminController@show')->name('admin.show');
             //删除管理员
