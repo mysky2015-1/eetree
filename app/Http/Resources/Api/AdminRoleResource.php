@@ -23,9 +23,7 @@ class AdminRoleResource extends JsonResource
             $row['permissions'] = $this->permissions->map(function ($item, $key) {
                 return $item->only(['id', 'name']);
             });
-            $row['menus'] = $this->menus->map(function ($item, $key) {
-                return $item->only(['menu_id']);
-            });
+            $row['menus'] = $this->menus->pluck('menu_id');
         }
         return $row;
     }

@@ -45,7 +45,7 @@ class AdminRoleController extends Controller
         DB::transaction(function () use ($role, $request) {
             $permissionIds = $request->input('permissions');
             $menuIds = $request->input('menus');
-            $oldMenuIds = $role->menus->pluck('menu_id');
+            $oldMenuIds = $role->menus->pluck('menu_id')->toArray();
             $role->update($request->validated());
             $role->permissions()->sync($permissionIds);
             $addMenuIds = array_diff($menuIds, $oldMenuIds);
