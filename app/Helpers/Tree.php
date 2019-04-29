@@ -8,10 +8,10 @@ class Tree
 {
     public static function make($source, $parentId = 0)
     {
-        if (empty($source) || $source->isEmpty()) {
-            return null;
-        }
         $map = collect([]);
+        if (empty($source) || $source->isEmpty()) {
+            return $map;
+        }
         $source->each(function ($item, $key) use ($map) {
             $k = 'map_' . $item->parent_id;
             if (!$map->has($k)) {
@@ -19,7 +19,8 @@ class Tree
             }
             $map->get($k)->push($item);
         });
-        return static::makeTree($map, $parentId);
+        $tree = static::makeTree($map, $parentId);
+        return $tree ?: collect([]);
     }
 
     public static function children($tree, $id)

@@ -54,5 +54,41 @@ return [
                 ],
             ],
         ],
+        [
+            'id' => 5,
+            'path' => '/article',
+            'component' => 'Layout',
+            'redirect' => '/article/publish',
+            'meta' => ['title' => '文章管理', 'icon' => 'list'],
+            'children' => [
+                [
+                    'id' => 6,
+                    'path' => 'publish',
+                    'component' => 'article_publish',
+                    'name' => 'article_publish',
+                    'meta' => ['title' => '已发布', 'icon' => 'list'],
+                ],
+                [
+                    'id' => 7,
+                    'path' => 'review',
+                    'component' => 'article_review',
+                    'name' => 'article_review',
+                    'meta' => ['title' => '待审核', 'icon' => 'list'],
+                ],
+            ],
+        ],
+        [
+            'id' => 8,
+            'path' => '/comment',
+            'component' => 'Layout',
+            'children' => [
+                [
+                    'path' => 'list',
+                    'component' => 'comment_list',
+                    'name' => 'comment',
+                    'meta' => ['title' => '评论管理', 'icon' => 'wechat'],
+                ],
+            ],
+        ],
     ],
 ];

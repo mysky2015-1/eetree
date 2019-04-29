@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Helpers\Tree;
 use App\Http\Requests\Api\CategoryRequest;
 use App\Http\Resources\Api\CategoryResource;
+use App\Models\Article;
 use App\Models\Category;
 use DB;
 use Illuminate\Http\Request;
@@ -15,28 +16,23 @@ class CategoryController extends Controller
     public function index(Request $request)
     {
         $categories = Category::orderBy('order', 'asc')->get();
-        $categories = Tree::make($categories);
+        // $categories = Tree::make($categories);
         return $this->success(CategoryResource::collection($categories));
     }
 
     //删除菜单
     public function delete(Category $category)
     {
-        $all = Category::orderBy('order', 'asc')->get();
-        $all = Tree::make($all);
+        $all = Category::getTree();
         $subTree = Tree::children($all, $category->id);
         $deleteIds = Tree::ids($subTree);
-        $siblings = Tree::siblings($all, $category);
         $deleteIds[] = $category->id;
-        DB::transaction(function () use ($siblings, $deleteIds) {
-            //TODO update batch
-            $siblings->each(function ($item, $key) {
-                if ($item->order != $key) {
-                    Category::where('id', $item->id)->update(['order' => $key]);
-                }
-            });
-            //TODO deleteIds 关联表更新或删除
+        DB::transaction(function () use ($category, $deleteIds) {
             Category::whereIn('id', $deleteIds)->delete();
+            Category::where('parent_id', $category->parent_id)
+                ->where('order', '>', $category->order)
+                ->decrement('order');
+            Article::whereIn('category_id', $deleteIds)->update(['category_id' => 0]);
         });
 
         return $this->success();
@@ -44,16 +40,46 @@ class CategoryController extends Controller
 
     public function store(CategoryRequest $request)
     {
-        $data = $request->all();
+        $data = $request->validated();
         $data['order'] = Category::where('parent_id', $data['parent_id'])->count();
-        Category::create($data);
-        return $this->created();
+        $category = Category::create($data);
+        return $this->success(new CategoryResource($category));
     }
 
     public function update(Category $category, CategoryRequest $request)
     {
-        $data = $request->all();
+        $data = $request->validated();
         $category->update($data);
+        return $this->success();
+    }
+
+    public function move(Category $category, Request $request)
+    {
+        $destId = $request->input('dest');
+        $destCategory = Category::find($destId);
+        $type = $request->input('type');
+        DB::transaction(function () use ($category, $destCategory, $type) {
+            Category::where('parent_id', $category->parent_id)
+                ->where('order', '>', $category->order)
+                ->decrement('order');
+            if ($type === 'before') {
+                $category->update(['parent_id' => $destCategory->parent_id, 'order' => $destCategory->order]);
+                Category::where('parent_id', $destCategory->parent_id)
+                    ->where('id', '<>', $category->id)
+                    ->where('order', '>=', $destCategory->order)
+                    ->increment('order');
+            } elseif ($type === 'after') {
+                $category->update(['parent_id' => $destCategory->parent_id, 'order' => $destCategory->order + 1]);
+                Category::where('parent_id', $destCategory->parent_id)
+                    ->where('id', '<>', $category->id)
+                    ->where('order', '>', $destCategory->order)
+                    ->increment('order');
+            } else {
+                // inner
+                $category->update(['parent_id' => $destCategory->id, 'order' => 0]);
+            }
+        });
+
         return $this->success();
     }
 }

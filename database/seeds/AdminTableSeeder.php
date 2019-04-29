@@ -15,43 +15,44 @@ class AdminTableSeeder extends Seeder
         // factory('App\Models\Admin', 3)->create([
         //     'password' => bcrypt('admin'),
         // ]);
+        $now = Carbon::now();
         DB::table('admin')->insert([
             'name' => 'admin',
             'password' => bcrypt('admin'),
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
+            'created_at' => $now,
+            'updated_at' => $now,
         ]);
         DB::table('admin_role')->insert([
             'name' => 'admin',
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
+            'created_at' => $now,
+            'updated_at' => $now,
         ]);
         DB::table('admin_role_user')->insert([
             'role_id' => 1,
             'user_id' => 1,
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
+            'created_at' => $now,
+            'updated_at' => $now,
         ]);
-        foreach ([1, 2] as $menu_id) {
+        foreach ([1, 2, 3, 4, 5, 6, 7, 8, 9, 10] as $menu_id) {
             DB::table('admin_role_menu')->insert([
                 'role_id' => 1,
                 'menu_id' => $menu_id,
-                'created_at' => Carbon::now(),
-                'updated_at' => Carbon::now(),
+                'created_at' => $now,
+                'updated_at' => $now,
             ]);
         }
         DB::table('admin_permission')->insert([
             'name' => 'all',
             'http_method' => 'ANY',
             'http_path' => '*',
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
+            'created_at' => $now,
+            'updated_at' => $now,
         ]);
         DB::table('admin_role_permission')->insert([
             'role_id' => 1,
             'permission_id' => 1,
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
+            'created_at' => $now,
+            'updated_at' => $now,
         ]);
     }
 }

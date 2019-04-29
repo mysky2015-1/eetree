@@ -14,7 +14,11 @@ class AdminRoleController extends Controller
     //返回菜单列表
     public function index(Request $request)
     {
-        $roles = AdminRole::paginate(config('eetree.limit'));
+        if ($request->input('page')) {
+            $roles = AdminRole::paginate(config('eetree.limit'));
+        } else {
+            $roles = AdminRole::get();
+        }
         return $this->success(AdminRoleResource::collection($roles));
     }
 

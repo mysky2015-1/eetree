@@ -19,4 +19,10 @@ class Category extends Model
     {
         return $this->hasMany(__CLASS__, 'parent_id');
     }
+
+    public static function getTree()
+    {
+        $all = static::orderBy('order', 'asc')->get();
+        return \App\Helpers\Tree::make($all);
+    }
 }

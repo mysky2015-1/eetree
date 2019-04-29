@@ -48,10 +48,21 @@ Route::namespace ('Api')->middleware('cors')->group(function () {
             Route::put('/admin_roles/{role}', 'AdminRoleController@update')->name('adminrole.update');
             Route::delete('/admin_roles/{role}', 'AdminRoleController@delete')->name('adminrole.delete');
 
-            Route::get('/categories', 'CategoryController@index')->name('cateory.index');
-            Route::post('/categories', 'CategoryController@store')->name('cateory.store');
-            Route::put('/categories/{category}', 'CategoryController@update')->name('cateory.update');
-            Route::delete('/categories/{category}', 'CategoryController@delete')->name('cateory.delete');
+            Route::get('/categories', 'CategoryController@index')->name('category.index');
+            Route::post('/categories', 'CategoryController@store')->name('category.store');
+            Route::put('/categories/{category}', 'CategoryController@update')->name('category.update');
+            Route::delete('/categories/{category}', 'CategoryController@delete')->name('category.delete');
+            Route::put('/categories/{category}/move', 'CategoryController@move')->name('category.move');
+
+            Route::get('/comments', 'CommentController@index')->name('comment.index');
+            Route::put('/comments/{comment}/toggle', 'CommentController@toggle')->name('comment.toggle');
+
+            Route::get('/articles', 'ArticleController@index')->name('article.index');
+            Route::put('/articles/{article}', 'ArticleController@update')->name('article.update');
+            Route::delete('/articles/{article}', 'ArticleController@delete')->name('article.delete');
+
+            Route::get('/articleDrafts', 'ArticleDraftController@index')->name('articleDraft.index');
+            Route::put('/articleDrafts/{article}/review', 'ArticleDraftController@review')->name('articleDraft.review');
         });
     });
 });

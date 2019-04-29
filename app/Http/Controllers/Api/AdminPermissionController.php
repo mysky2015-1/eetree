@@ -12,8 +12,11 @@ class AdminPermissionController extends Controller
     //返回菜单列表
     public function index(Request $request)
     {
-        // $permissions = AdminPermission::paginate(config('eetree.limit'));
-        $permissions = AdminPermission::get();
+        if ($request->input('page')) {
+            $permissions = AdminPermission::paginate(config('eetree.limit'));
+        } else {
+            $permissions = AdminPermission::get();
+        }
         return $this->success(AdminPermissionResource::collection($permissions));
     }
 
