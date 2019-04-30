@@ -12,13 +12,13 @@ class ArticleController extends Controller
     //返回菜单列表
     public function index(Request $request)
     {
-        $articles = Article::with('user')->where('deleted', 0)->paginate(config('eetree.limit'));
+        $articles = Article::with('user')->paginate(config('eetree.limit'));
         return $this->success(ArticleResource::collection($articles));
     }
 
     public function delete(Article $article)
     {
-        $article->update(['deleted' => 1]);
+        $article->delete();
         return $this->success();
     }
 

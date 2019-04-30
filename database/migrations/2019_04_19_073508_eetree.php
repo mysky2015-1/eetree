@@ -30,11 +30,11 @@ class Eetree extends Migration
             $table->string('title', 255);
             $table->text('content');
             $table->tinyInteger('status')->default(0)->comment('0:草稿,1:提交审核,8:审核不通过,9:审核通过');
-            $table->text('review_remark')->comment('审核不通过的原因');
-            $table->tinyInteger('deleted')->default(0);
-            $table->timestamp('submit_at');
+            $table->text('review_remarks')->comment('审核不通过的原因');
+            $table->timestamp('submit_at')->nullable();
 
             $table->timestamps();
+            $table->softDeletes();
 
             $table->index('article_id');
         });
@@ -44,9 +44,9 @@ class Eetree extends Migration
             $table->integer('category_id')->default(0);
             $table->string('title', 255);
             $table->text('content');
-            $table->tinyInteger('deleted')->default(0);
 
             $table->timestamps();
+            $table->softDeletes();
         });
         Schema::create('category', function (Blueprint $table) {
             $table->increments('id');

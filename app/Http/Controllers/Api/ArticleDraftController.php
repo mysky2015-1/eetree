@@ -13,7 +13,6 @@ class ArticleDraftController extends Controller
     public function index(Request $request)
     {
         $articleDrafts = ArticleDraft::with('user')
-            ->where('deleted', 0)
             ->where('status', 1)
             ->paginate(config('eetree.limit'));
         return $this->success(ArticleDraftResource::collection($articleDrafts));
@@ -21,7 +20,8 @@ class ArticleDraftController extends Controller
 
     public function review(ArticleDraft $articleDraft, ArticleDraftRequest $request)
     {
-        $articleDraft->update($request->validated());
+        $a = ArticleDraft::where('id', $articleDraft->id)->update(['status' => 9]);
+        var_dump($a);exit;
         return $this->success();
     }
 }

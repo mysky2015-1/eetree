@@ -18,6 +18,7 @@ class ArticleDraftResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),
+            'submit_at' => $this->created_at->format('Y-m-d H:i:s'),
             'user' => [
                 'nickname' => $this->user->nickname,
             ],

@@ -19,9 +19,9 @@ class CreateAdminTable extends Migration
             $table->string('password', 60);
             $table->text('last_token')->nullable()->comment('登陆时的token');
             $table->string('avatar')->nullable();
-            $table->unsignedTinyInteger('deleted')->default(0);
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
 
         Schema::create('admin_role', function (Blueprint $table) {

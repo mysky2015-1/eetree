@@ -16,7 +16,7 @@ class AdminController extends Controller
     public function index(Request $request)
     {
         $name = $request->input('name');
-        $where = [['deleted', 0]];
+        $where = [];
         if (!empty($name)) {
             $where[] = ['name', 'like', '%' . $name . '%'];
         }
@@ -36,7 +36,7 @@ class AdminController extends Controller
         if ($admin->id == 1) {
             return $this->failed('该用户是超级管理员');
         }
-        $admin->update(['deleted' => 1]);
+        $admin->delete();
         return $this->success();
     }
 

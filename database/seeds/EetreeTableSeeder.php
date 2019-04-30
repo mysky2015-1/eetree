@@ -29,6 +29,21 @@ class EetreeTableSeeder extends Seeder
         DB::table('article_draft')->truncate();
         DB::table('article')->truncate();
         DB::table('comment')->truncate();
+        $status = [1, 2, 8, 9];
+        // for ($i = 0; $i < 50; $i++) {
+        //     DB::table('article_draft')->insert([
+        //         'title' => $faker->title,
+        //         'content' => $faker->text,
+        //         'user_id' => rand(1, 49),
+        //         'article_id' => rand(1, 49),
+        //         'user_category_id' => rand(1, 3),
+        //         'status' => $status[rand(0, 3)],
+        //         'review_remarks' => '',
+        //         'created_at' => $now,
+        //         'updated_at' => $now,
+        //     ]);
+        // }
+        // return;
         foreach (['category', 'user_category'] as $table) {
             DB::table($table)->insert([
                 'parent_id' => 0,
@@ -67,6 +82,8 @@ class EetreeTableSeeder extends Seeder
                 'user_id' => rand(1, 49),
                 'article_id' => rand(1, 49),
                 'user_category_id' => rand(1, 3),
+                'status' => $status[rand(0, 3)],
+                'review_remarks' => '',
                 'created_at' => $now,
                 'updated_at' => $now,
             ]);

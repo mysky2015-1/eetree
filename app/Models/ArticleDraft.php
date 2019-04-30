@@ -3,12 +3,19 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ArticleDraft extends Model
 {
-    protected $table = 'article_deaft';
+    use SoftDeletes;
+    protected $table = 'article_draft';
 
     protected $fillable = [
-        'user_category_id', 'article_id', 'title', 'content',
+        'user_category_id', 'article_id', 'title', 'status', 'content', 'submit_at',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User');
+    }
 }
