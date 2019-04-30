@@ -6,6 +6,7 @@ use App\Http\Requests\Api\ArticleDraftRequest;
 use App\Http\Resources\Api\ArticleDraftResource;
 use App\Models\Article;
 use App\Models\ArticleDraft;
+use Carbon\Carbon;
 
 class ArticleDraftController extends Controller
 {
@@ -37,7 +38,9 @@ class ArticleDraftController extends Controller
                     $updated = true;
                 }
                 if (empty($updated)) {
-                    $article = Article::create($articleDraft->toArray());
+                    $row = $articleDraft->toArray();
+                    $row['publish_at'] = Carbon::now();
+                    $article = Article::create($row);
                     $articleDraft->update(['article_id' => $article->id]);
                 }
             }

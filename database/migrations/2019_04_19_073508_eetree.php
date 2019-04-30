@@ -44,9 +44,9 @@ class Eetree extends Migration
             $table->integer('category_id')->default(0);
             $table->string('title', 255);
             $table->text('content');
+            $table->timestamp('publish_at')->nullable();
 
             $table->timestamps();
-            $table->softDeletes();
         });
         Schema::create('category', function (Blueprint $table) {
             $table->increments('id');
