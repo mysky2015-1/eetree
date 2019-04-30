@@ -45,7 +45,7 @@ class AdminMenuController extends Controller
 
     public function store(AdminMenuRequest $request)
     {
-        $data = $request->all();
+        $data = $request->validated();
         $data['order'] = AdminMenu::where('parent_id', $data['parent_id'])->count();
         AdminMenu::create($data);
         return $this->created();
@@ -53,7 +53,7 @@ class AdminMenuController extends Controller
 
     public function update(AdminMenu $menu, AdminMenuRequest $request)
     {
-        $data = $request->all();
+        $data = $request->validated();
         $menu->update($data);
         return $this->success();
     }
