@@ -59,8 +59,6 @@ Route::namespace ('Api')->middleware('cors')->group(function () {
 
             Route::get('/articles', 'ArticleController@index')->name('article.index');
             Route::put('/articles/{article}', 'ArticleController@update')->name('article.update');
-            Route::delete('/articles/{article}', 'ArticleController@delete')->name('article.delete');
-
             Route::get('/articleDrafts', 'ArticleDraftController@index')->name('articleDraft.index');
             Route::put('/articleDrafts/{articleDraft}/review', 'ArticleDraftController@review')->name('articleDraft.review');
         });

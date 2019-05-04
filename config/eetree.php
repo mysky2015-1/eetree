@@ -73,12 +73,12 @@ return [
                     'path' => 'review',
                     'component' => 'article_review',
                     'name' => 'article_review',
-                    'meta' => ['title' => '待审核', 'icon' => 'list'],
+                    'meta' => ['title' => '审核列表', 'icon' => 'list'],
                 ],
             ],
         ],
         [
-            'id' => 8,
+            'id' => 9,
             'path' => '/comment',
             'component' => 'Layout',
             'children' => [

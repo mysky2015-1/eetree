@@ -21,7 +21,7 @@ class ArticleDraftController extends Controller
 
     public function review(ArticleDraft $articleDraft, ArticleDraftRequest $request)
     {
-        if ($articleDraft->status !== ArticleDraft::STATUS_SUBMIT) {
+        if (!in_array($articleDraft->status, [ArticleDraft::STATUS_SUBMIT, ArticleDraft::STATUS_REFUSE])) {
             return $this->failed('参数有误');
         }
         \DB::transaction(function () use ($articleDraft, $request) {
@@ -39,8 +39,10 @@ class ArticleDraftController extends Controller
                 }
                 if (empty($updated)) {
                     $row = $articleDraft->toArray();
-                    $row['publish_at'] = Carbon::now();
                     $article = Article::create($row);
+                    $article->user_id = $row['user_id'];
+                    $article->publish_at = Carbon::now();
+                    $article->save();
                     $articleDraft->update(['article_id' => $article->id]);
                 }
             }

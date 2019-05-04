@@ -12,6 +12,10 @@ class ArticleRequest extends FormRequest
                     'id' => ['required'],
                 ];
             case 'PUT':
+                $publish = (int) $this->publish;
+                if ($publish === 1 || $publish === 0) {
+                    return [];
+                }
                 return [
                     'title' => ['required'],
                     'content' => ['required'],
