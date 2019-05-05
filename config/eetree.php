@@ -1,5 +1,10 @@
 <?php
 return [
+    'sms' => [
+        'default' => [
+            'SendCloud' => 1,
+        ],
+    ],
     'limit' => 10,
     'menus' => [
         [
