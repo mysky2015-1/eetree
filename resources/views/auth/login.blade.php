@@ -57,8 +57,8 @@
                                     登陆
                                 </button>
 
-                                @if (Route::has('password.request'))
-                                    <a class="btn btn-link" href="{{ route('password.request') }}">
+                                @if (Route::has('password.mobile'))
+                                    <a class="btn btn-link" href="{{ route('password.mobile') }}">
                                         忘记密码
                                     </a>
                                 @endif

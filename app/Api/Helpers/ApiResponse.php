@@ -78,8 +78,12 @@ trait ApiResponse
      */
     public function failed($message, $code = FoundationResponse::HTTP_BAD_REQUEST, $status = 'error')
     {
-
         return $this->setStatusCode($code)->message($message, $status);
+    }
+
+    public function error($message, $status = 'error')
+    {
+        return $this->message($message, $status);
     }
 
     /**
