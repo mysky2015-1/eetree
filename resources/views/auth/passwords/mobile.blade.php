@@ -32,14 +32,14 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="code" class="col-md-4 col-form-label text-md-right">验证码</label>
+                            <label for="verify_code" class="col-md-4 col-form-label text-md-right">验证码</label>
 
                             <div class="col-md-6">
-                                <input id="code" type="text" class="form-control{{ $errors->has('code') ? ' is-invalid' : '' }}" name="code" required>
+                                <input id="verify_code" type="text" class="form-control{{ $errors->has('verify_code') ? ' is-invalid' : '' }}" name="verify_code" required>
 
-                                @if ($errors->has('code'))
+                                @if ($errors->has('verify_code'))
                                     <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $errors->first('code') }}</strong>
+                                        <strong>{{ $errors->first('verify_code') }}</strong>
                                     </span>
                                 @endif
                             </div>

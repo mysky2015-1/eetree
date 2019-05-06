@@ -176,7 +176,6 @@ return [
         App\Providers\RouteServiceProvider::class,
 
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
-        App\Providers\PasswordResetServiceProvider::class,
         Toplan\PhpSms\PhpSmsServiceProvider::class,
     ],
 
@@ -228,7 +227,6 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-        'XyPassword' => App\Foundation\Auth\Passwords\Facade\Password::class,
         'PhpSms' => Toplan\PhpSms\Facades\Sms::class,
     ],
 

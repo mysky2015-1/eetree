@@ -11,7 +11,7 @@ class Sms
     {
         $code = rand(10000, 99999);
         $templates = config('eetree.sms');
-        $result = true; //PhpSms::make($templates[$key])->to($mobile)->data([$code])->send();
+        $result = PhpSms::make($templates[$key])->to($mobile)->data([$code])->send();
         if ($result === null || $result === true || (isset($result['success']) && $result['success'])) {
             Redis::setEx(sprintf('smscode:mobile:%s:%s', $mobile, $key), 3000, $code);
             return $code;
@@ -21,7 +21,7 @@ class Sms
 
     public static function verify($mobile, $code, $key = 'default')
     {
-        if (Redis::get(sprintf('smscode:mobile:%s:%s', $mobile, $key)) != $code) {
+        if (Redis::get(sprintf('smscode:mobile:%s:%s', $mobile, $key)) == $code) {
             return true;
         } else {
             return false;

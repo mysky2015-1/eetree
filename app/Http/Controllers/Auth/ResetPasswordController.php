@@ -3,7 +3,12 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Services\Sms;
+use Illuminate\Contracts\Auth\PasswordBroker;
 use Illuminate\Foundation\Auth\ResetsPasswords;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Password;
+use Validator;
 
 class ResetPasswordController extends Controller
 {
@@ -37,35 +42,63 @@ class ResetPasswordController extends Controller
         $this->middleware('guest');
     }
 
-    /**
-     * 通过短信验证码重置密码
-     * @param MobileResetPasswordRequest $request
-     * @return array
-     */
-    public function resetByMobile(MobileResetPasswordRequest $request)
+    protected function rules()
     {
-        $credentials = $request->only('mobile', 'password', 'password_confirmation', 'verify_code');
+        return [
+            'password' => 'required|confirmed|min:8',
+        ];
+    }
 
-        $broker = $this->getBroker();
+    public function resetByMobile(Request $request)
+    {
+        if (empty($request->password)) {
+            if (!Sms::verify($request->input('mobile'), $request->input('verify_code'))) {
+                return back()
+                    ->withInput($request->only('mobile'))
+                    ->withErrors(['verify_code' => '验证码错误']);
+            }
+            return view('auth.passwords.reset')->with($request->only('mobile', 'verify_code'));
+        } else {
+            $validator = Validator::make($request->all(), $this->rules(), $this->validationErrorMessages());
+            if ($validator->fails()) {
+                return view('auth.passwords.reset')
+                    ->with($request->only('mobile', 'verify_code'))
+                    ->withErrors($validator);
+            }
 
-        $response = Password::broker($broker)->resetByMobile($credentials, function ($user, $password) {
-            $this->resetPassword($user, $password);
-        });
-
-        switch ($response) {
-            case Password::PASSWORD_RESET:
-                unset($credentials['verify_code']);
-                unset($credentials['password_confirmation']);
-                return [
-                    'status_code' => '200',
-                    'message' => '密码重置成功',
-                ];
-
-            case Password::INVALID_TOKEN:
-            //返回'手机验证码已失效'
-
-            default:
-                //返回'密码重置失败'
+            $credentials = $request->only('mobile', 'password', 'password_confirmation', 'verify_code');
+            $response = $this->resetBroker($credentials, function ($user, $password) {
+                $this->resetPassword($user, $password);
+            });
+            return $response == Password::PASSWORD_RESET ? $this->sendResetResponse($request, $response) : $this->sendResetFailedResponse($request, $response);
         }
+    }
+
+    protected function sendResetFailedResponse(Request $request, $response)
+    {
+        if ($response == '验证码过期') {
+            $error = ['verify_code' => trans($response)];
+        } else {
+            $error = ['mobile' => trans($response)];
+        }
+        return redirect()->back()
+            ->withInput($request->only('mobile'))
+            ->withErrors($error);
+    }
+
+    protected function resetBroker(array $credentials, $callback)
+    {
+        $user = \App\Models\User::where('mobile', $credentials['mobile'])->first();
+        if (empty($user)) {
+            return '找不到该用户';
+        }
+        if (!Sms::verify($credentials['mobile'], $credentials['verify_code'])) {
+            return '验证码过期';
+        }
+        $pass = $credentials['password'];
+        call_user_func($callback, $user, $pass);
+
+        Sms::clear($credentials['mobile']);
+        return PasswordBroker::PASSWORD_RESET;
     }
 }
