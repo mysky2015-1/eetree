@@ -2,22 +2,22 @@
 
 namespace App\Http\Requests\Api;
 
-use App\Models\ArticleDraft;
+use App\Models\DocDraft;
 
-class ArticleDraftRequest extends FormRequest
+class DocDraftRequest extends FormRequest
 {
     public function rules()
     {
         switch ($this->method()) {
             case 'GET':
                 return [
-                    'status' => ['required', 'in:' . implode(',', [ArticleDraft::STATUS_SUBMIT, ArticleDraft::STATUS_REFUSE])],
+                    'status' => ['required', 'in:' . implode(',', [DocDraft::STATUS_SUBMIT, DocDraft::STATUS_REFUSE])],
                 ];
             case 'PUT':
                 $rules = [
-                    'status' => ['required', 'in:' . implode(',', [ArticleDraft::STATUS_REFUSE, ArticleDraft::STATUS_PASS])],
+                    'status' => ['required', 'in:' . implode(',', [DocDraft::STATUS_REFUSE, DocDraft::STATUS_PASS])],
                 ];
-                if ($this->status == ArticleDraft::STATUS_REFUSE) {
+                if ($this->status == DocDraft::STATUS_REFUSE) {
                     $rules['review_remarks'] = ['required'];
                 }
                 return $rules;

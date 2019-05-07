@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Api;
 
-class ArticleRequest extends FormRequest
+class DocRequest extends FormRequest
 {
     public function rules()
     {

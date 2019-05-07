@@ -22,3 +22,8 @@ Route::middleware('guest')->group(function () {
     Route::post('/sms/code', 'SmsController@code')->name('sms.code');
     Route::post('password/reset-mobile', 'Auth\ResetPasswordController@resetByMobile')->name('password.resetByMobile');
 });
+
+Route::middleware('auth')->group(function () {
+    Route::get('/folder/{parentId?}', 'CategoryController@folder')->name('category.folder');
+    Route::get('/doc/edit/{docDraft}', 'DocDraftController@edit')->name('docDraft.edit');
+});

@@ -11,7 +11,7 @@ class CommentController extends Controller
     //返回菜单列表
     public function index(Request $request)
     {
-        $comments = Comment::with(['user', 'article'])->paginate(config('eetree.limit'));
+        $comments = Comment::with(['user', 'doc'])->paginate(config('eetree.limit'));
         return $this->success(CommentResource::collection($comments));
     }
 

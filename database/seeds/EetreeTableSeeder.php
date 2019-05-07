@@ -26,16 +26,16 @@ class EetreeTableSeeder extends Seeder
         // return;
         DB::table('category')->truncate();
         DB::table('user')->truncate();
-        DB::table('article_draft')->truncate();
-        DB::table('article')->truncate();
+        DB::table('doc_draft')->truncate();
+        DB::table('doc')->truncate();
         DB::table('comment')->truncate();
         $status = [1, 2, 8, 9];
         // for ($i = 0; $i < 50; $i++) {
-        //     DB::table('article_draft')->insert([
+        //     DB::table('doc_draft')->insert([
         //         'title' => $faker->title,
         //         'content' => $faker->text,
         //         'user_id' => rand(1, 49),
-        //         'article_id' => rand(1, 49),
+        //         'doc_id' => rand(1, 49),
         //         'user_category_id' => rand(1, 3),
         //         'status' => $status[rand(0, 3)],
         //         'review_remarks' => '',
@@ -76,18 +76,18 @@ class EetreeTableSeeder extends Seeder
                 'created_at' => $now,
                 'updated_at' => $now,
             ]);
-            DB::table('article_draft')->insert([
+            DB::table('doc_draft')->insert([
                 'title' => $faker->title,
                 'content' => $faker->text,
                 'user_id' => rand(1, 49),
-                'article_id' => rand(1, 49),
+                'doc_id' => rand(1, 49),
                 'user_category_id' => rand(1, 3),
                 'status' => $status[rand(0, 3)],
                 'review_remarks' => '',
                 'created_at' => $now,
                 'updated_at' => $now,
             ]);
-            DB::table('article')->insert([
+            DB::table('doc')->insert([
                 'user_id' => rand(1, 49),
                 'title' => $faker->title,
                 'content' => $faker->text,
@@ -97,7 +97,7 @@ class EetreeTableSeeder extends Seeder
             ]);
             DB::table('comment')->insert([
                 'user_id' => rand(1, 49),
-                'article_id' => rand(1, 49),
+                'doc_id' => rand(1, 49),
                 'content' => $faker->text,
                 'active' => rand(0, 1),
                 'created_at' => $now,

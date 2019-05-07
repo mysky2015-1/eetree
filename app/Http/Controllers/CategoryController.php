@@ -2,26 +2,32 @@
 
 namespace App\Http\Controllers;
 
+use App\Api\Helpers\ApiResponse;
+use App\Models\DocDraft;
+use App\Models\UserCategory;
+use Illuminate\Support\Facades\Auth;
+
 class CategoryController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
+    use ApiResponse;
 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function index()
+    public function folder(int $parentId = 0)
     {
-        $categories = Category::orderBy('order', 'asc')->get();
-        return view('category/index');
+        $userId = Auth::id();
+
+        $categories = UserCategory::where([
+            ['user_id', $userId],
+            ['parent_id', $parentId],
+        ])->orderBy('order', 'asc')->get();
+
+        $docs = DocDraft::where([
+            ['user_id', $userId],
+            ['user_category_id', $parentId],
+        ])->get();
+
+        return $this->success([
+            'categories' => $categories,
+            'docs' => $docs,
+        ]);
     }
 }

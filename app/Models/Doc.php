@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Article extends Model
+class Doc extends Model
 {
-    protected $table = 'article';
+    protected $table = 'doc';
 
     protected $fillable = [
         'category_id', 'title', 'content',
@@ -14,7 +14,7 @@ class Article extends Model
 
     public function comments()
     {
-        return $this->hasMany('App\Models\Comment', 'article_id');
+        return $this->hasMany('App\Models\Comment', 'doc_id');
     }
 
     public function user()

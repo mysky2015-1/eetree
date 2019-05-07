@@ -9,12 +9,12 @@ class Comment extends Model
     protected $table = 'comment';
 
     protected $fillable = [
-        'article_id', 'content', 'active',
+        'doc_id', 'content', 'active',
     ];
 
-    public function article()
+    public function doc()
     {
-        return $this->belongsTo('App\Models\Article');
+        return $this->belongsTo('App\Models\Doc');
     }
 
     public function user()

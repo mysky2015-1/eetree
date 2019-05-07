@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Helpers\Tree;
 use App\Http\Requests\Api\CategoryRequest;
 use App\Http\Resources\Api\CategoryResource;
-use App\Models\Article;
 use App\Models\Category;
+use App\Models\Doc;
 use DB;
 use Illuminate\Http\Request;
 
@@ -32,7 +32,7 @@ class CategoryController extends Controller
             Category::where('parent_id', $category->parent_id)
                 ->where('order', '>', $category->order)
                 ->decrement('order');
-            Article::whereIn('category_id', $deleteIds)->update(['category_id' => 0]);
+            Doc::whereIn('category_id', $deleteIds)->update(['category_id' => 0]);
         });
 
         return $this->success();

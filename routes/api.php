@@ -57,10 +57,10 @@ Route::namespace ('Api')->middleware('cors')->group(function () {
             Route::get('/comments', 'CommentController@index')->name('comment.index');
             Route::put('/comments/{comment}/toggle', 'CommentController@toggle')->name('comment.toggle');
 
-            Route::get('/articles', 'ArticleController@index')->name('article.index');
-            Route::put('/articles/{article}', 'ArticleController@update')->name('article.update');
-            Route::get('/articleDrafts', 'ArticleDraftController@index')->name('articleDraft.index');
-            Route::put('/articleDrafts/{articleDraft}/review', 'ArticleDraftController@review')->name('articleDraft.review');
+            Route::get('/docs', 'DocController@index')->name('doc.index');
+            Route::put('/docs/{doc}', 'DocController@update')->name('doc.update');
+            Route::get('/docDrafts', 'DocDraftController@index')->name('docDraft.index');
+            Route::put('/docDrafts/{docDraft}/review', 'DocDraftController@review')->name('docDraft.review');
         });
     });
 });

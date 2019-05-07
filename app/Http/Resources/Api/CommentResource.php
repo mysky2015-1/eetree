@@ -22,8 +22,8 @@ class CommentResource extends JsonResource
             'user' => [
                 'nickname' => $this->user->nickname,
             ],
-            'article' => [
-                'title' => $this->article->title,
+            'doc' => [
+                'title' => $this->doc->title,
             ],
         ];
     }

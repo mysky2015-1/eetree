@@ -22,10 +22,10 @@ class CreateEetreeTable extends Migration
             $table->rememberToken();
             $table->timestamps();
         });
-        Schema::create('article_draft', function (Blueprint $table) {
+        Schema::create('doc_draft', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->default(0);
-            $table->integer('article_id')->default(0);
+            $table->integer('doc_id')->default(0);
             $table->integer('user_category_id')->default(0);
             $table->string('title', 255);
             $table->text('content');
@@ -36,9 +36,9 @@ class CreateEetreeTable extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->index('article_id');
+            $table->index('doc_id');
         });
-        Schema::create('article', function (Blueprint $table) {
+        Schema::create('doc', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->default(0);
             $table->integer('category_id')->default(0);
@@ -70,13 +70,13 @@ class CreateEetreeTable extends Migration
         Schema::create('comment', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id')->default(0);
-            $table->integer('article_id')->default(0);
+            $table->integer('doc_id')->default(0);
             $table->text('content');
             $table->tinyInteger('active')->default(0);
 
             $table->timestamps();
 
-            $table->index('article_id');
+            $table->index('doc_id');
         });
     }
 
@@ -88,8 +88,8 @@ class CreateEetreeTable extends Migration
     public function down()
     {
         Schema::dropIfExists('user');
-        Schema::dropIfExists('article_draft');
-        Schema::dropIfExists('article');
+        Schema::dropIfExists('doc_draft');
+        Schema::dropIfExists('doc');
         Schema::dropIfExists('category');
         Schema::dropIfExists('user_category');
         Schema::dropIfExists('comment');
