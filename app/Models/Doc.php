@@ -12,6 +12,10 @@ class Doc extends Model
         'category_id', 'title', 'content',
     ];
 
+    protected $casts = [
+        'content' => 'array',
+    ];
+
     public function comments()
     {
         return $this->hasMany('App\Models\Comment', 'doc_id');

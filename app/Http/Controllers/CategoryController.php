@@ -6,14 +6,16 @@ use App\Api\Helpers\ApiResponse;
 use App\Http\Requests\Api\UserCategoryRequest;
 use App\Models\DocDraft;
 use App\Models\UserCategory;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class CategoryController extends Controller
 {
     use ApiResponse;
 
-    public function folder(int $parentId = 0)
+    public function folder(Request $request)
     {
+        $parentId = (int) $request->input('id');
         $userId = Auth::id();
 
         $categories = UserCategory::where([

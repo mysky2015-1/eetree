@@ -7,17 +7,9 @@ use Illuminate\Http\Request;
 
 class DocController extends Controller
 {
-    public function search(Request $request)
+    public function index()
     {
-        $q = $request->input('q');
-        $docs = Doc::where([
-            ['publish_at', '>', 0],
-            ['title', 'like', '%' . $q . '%'],
-        ])->paginate(config('eetree.limit'));
-
-        return view('doc/search', [
-            'docs' => $docs,
-        ]);
+        return view('doc/index');
     }
 
     public function detail(Doc $doc)
@@ -25,6 +17,22 @@ class DocController extends Controller
         $doc->content = json_decode($doc->content, true);
         return view('doc/detail', [
             'doc' => $doc,
+        ]);
+    }
+
+    public function search(Request $request)
+    {
+        $q = $request->input('q');
+        $where = [
+            ['publish_at', '>', 0],
+        ];
+        if (!empty($q)) {
+            $where[] = ['title', 'like', '%' . $q . '%'];
+        }
+        $docs = Doc::where($where)->paginate(config('eetree.limit'));
+
+        return view('doc/search', [
+            'docs' => $docs,
         ]);
     }
 }

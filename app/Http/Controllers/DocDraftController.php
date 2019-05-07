@@ -19,6 +19,9 @@ class DocDraftController extends Controller
             if ($docDraft->user_id != $userId) {
                 abort(403);
             }
+            if ($docDraft->status == DocDraft::STATUS_SUBMIT) {
+                abort(403, '审核中，不能修改');
+            }
             return view('doc_draft/edit', [
                 'docDraft' => $docDraft->toArray(),
             ]);
@@ -38,6 +41,9 @@ class DocDraftController extends Controller
         if ($docDraft) {
             if ($docDraft->user_id != $userId) {
                 $this->failed('无权限');
+            }
+            if ($docDraft->status == DocDraft::STATUS_SUBMIT) {
+                $this->failed('审核中，不能修改');
             }
             $docDraft->title = $title;
             $docDraft->content = $content;

@@ -29,10 +29,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/doc/edit/{docDraft}', 'DocDraftController@edit')->name('docDraft.edit');
     Route::post('/doc/save/{docDraft?}', 'DocDraftController@save')->name('docDraft.save');
     // user category
-    Route::get('/folder/{parentId?}', 'CategoryController@folder')->name('userCategory.folder');
+    Route::post('/folder', 'CategoryController@folder')->name('userCategory.folder');
     Route::post('/categories', 'CategoryController@store')->name('userCategory.store');
     Route::put('/categories/{category}', 'CategoryController@update')->name('userCategory.update');
     // doc
-    Route::get('/doc/search', 'DocController@search')->name('doc.search');
+    Route::get('/doc/list', 'DocController@index')->name('doc.index');
     Route::get('/doc/detail/{doc}', 'DocController@detail')->name('doc.detail');
+    Route::get('/doc/search', 'DocController@search')->name('doc.search');
 });

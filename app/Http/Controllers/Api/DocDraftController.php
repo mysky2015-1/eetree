@@ -15,8 +15,8 @@ class DocDraftController extends Controller
     {
         $docDrafts = DocDraft::with('user')
             ->where('status', $request->input('status'))
+            ->orderBy('created_at', 'desc')
             ->paginate(config('eetree.adminLimit'));
-        var_dump($docDrafts);exit;
         return $this->success(DocDraftResource::collection($docDrafts));
     }
 
@@ -42,7 +42,8 @@ class DocDraftController extends Controller
                 }
                 if (empty($updated)) {
                     $row = $docDraft->toArray();
-                    $doc = Doc::create($row);
+                    $doc = new Doc;
+                    $doc->fill($row);
                     $doc->user_id = $row['user_id'];
                     $doc->publish_at = Carbon::now();
                     $doc->save();

@@ -11,6 +11,8 @@ class DocDraft extends Model
 
     protected $table = 'doc_draft';
 
+    protected $dates = ['submit_at'];
+
     const STATUS_REFUSE = 8;
     const STATUS_PASS = 9;
     const STATUS_SUBMIT = 1;
