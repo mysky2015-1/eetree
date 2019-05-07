@@ -15,7 +15,8 @@ class DocDraftController extends Controller
     {
         $docDrafts = DocDraft::with('user')
             ->where('status', $request->input('status'))
-            ->paginate(config('eetree.limit'));
+            ->paginate(config('eetree.adminLimit'));
+        var_dump($docDrafts);exit;
         return $this->success(DocDraftResource::collection($docDrafts));
     }
 

@@ -92,6 +92,7 @@ class EetreeTableSeeder extends Seeder
                 'title' => $faker->title,
                 'content' => $faker->text,
                 'category_id' => rand(1, 3),
+                'publish_at' => $now,
                 'created_at' => $now,
                 'updated_at' => $now,
             ]);

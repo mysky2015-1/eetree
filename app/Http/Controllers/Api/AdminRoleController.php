@@ -15,7 +15,7 @@ class AdminRoleController extends Controller
     public function index(Request $request)
     {
         if ($request->input('page')) {
-            $roles = AdminRole::paginate(config('eetree.limit'));
+            $roles = AdminRole::paginate(config('eetree.adminLimit'));
         } else {
             $roles = AdminRole::get();
         }

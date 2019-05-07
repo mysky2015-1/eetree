@@ -13,7 +13,7 @@ class DocController extends Controller
     //返回文档列表
     public function index(Request $request)
     {
-        $docs = Doc::with('user')->paginate(config('eetree.limit'));
+        $docs = Doc::with('user')->paginate(config('eetree.adminLimit'));
         return $this->success(DocResource::collection($docs));
     }
 

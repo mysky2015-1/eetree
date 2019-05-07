@@ -20,7 +20,7 @@ class AdminController extends Controller
         if (!empty($name)) {
             $where[] = ['name', 'like', '%' . $name . '%'];
         }
-        $admins = Admin::where($where)->paginate(config('eetree.limit'));
+        $admins = Admin::where($where)->paginate(config('eetree.adminLimit'));
         return $this->success(AdminResource::collection($admins));
     }
 

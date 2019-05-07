@@ -24,6 +24,15 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::get('/folder/{parentId?}', 'CategoryController@folder')->name('category.folder');
+    // doc draft
+    Route::get('/doc/new', 'DocDraftController@edit')->name('docDraft.new');
     Route::get('/doc/edit/{docDraft}', 'DocDraftController@edit')->name('docDraft.edit');
+    Route::post('/doc/save/{docDraft?}', 'DocDraftController@save')->name('docDraft.save');
+    // user category
+    Route::get('/folder/{parentId?}', 'CategoryController@folder')->name('userCategory.folder');
+    Route::post('/categories', 'CategoryController@store')->name('userCategory.store');
+    Route::put('/categories/{category}', 'CategoryController@update')->name('userCategory.update');
+    // doc
+    Route::get('/doc/search', 'DocController@search')->name('doc.search');
+    Route::get('/doc/detail/{doc}', 'DocController@detail')->name('doc.detail');
 });

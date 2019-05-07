@@ -19,21 +19,12 @@ class DocDraft extends Model
         'user_category_id', 'doc_id', 'title', 'status', 'content', 'submit_at', 'review_remarks',
     ];
 
+    protected $casts = [
+        'content' => 'array',
+    ];
+
     public function user()
     {
         return $this->belongsTo('App\Models\User');
-    }
-
-    public function parseDoc()
-    {
-        $content = json_decode($this->content, true);
-        if ($content) {
-            $this->_content = [];
-            foreach ($content as $row) {
-                $this->_content[] = [
-                    'text' => $row['text'],
-                ];
-            }
-        }
     }
 }

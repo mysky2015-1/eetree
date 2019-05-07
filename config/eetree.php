@@ -6,6 +6,7 @@ return [
         ],
     ],
     'limit' => 10,
+    'adminLimit' => 10,
     'menus' => [
         [
             'id' => 1,

@@ -13,7 +13,7 @@ class AdminPermissionController extends Controller
     public function index(Request $request)
     {
         if ($request->input('page')) {
-            $permissions = AdminPermission::paginate(config('eetree.limit'));
+            $permissions = AdminPermission::paginate(config('eetree.adminLimit'));
         } else {
             $permissions = AdminPermission::get();
         }
