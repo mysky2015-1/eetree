@@ -7,14 +7,9 @@ use Illuminate\Http\Request;
 
 class DocController extends Controller
 {
-    public function index()
-    {
-        return view('doc/index');
-    }
-
     public function detail(Doc $doc)
     {
-        $doc->content = json_decode($doc->content, true);
+        $doc->countPlus('view_count');
         return view('doc/detail', [
             'doc' => $doc,
         ]);

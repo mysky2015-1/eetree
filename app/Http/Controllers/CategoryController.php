@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Api\Helpers\ApiResponse;
+use App\Helpers\ApiResponse;
 use App\Http\Requests\Api\UserCategoryRequest;
+use App\Http\Resources\DocDraftResource;
+use App\Http\Resources\UserCategoryResource;
 use App\Models\DocDraft;
 use App\Models\UserCategory;
 use Illuminate\Http\Request;
@@ -29,8 +31,8 @@ class CategoryController extends Controller
         ])->get();
 
         return $this->success([
-            'categories' => $categories,
-            'docs' => $docs,
+            'categories' => UserCategoryResource::collection($categories),
+            'docs' => DocDraftResource::collection($docs),
         ]);
     }
 

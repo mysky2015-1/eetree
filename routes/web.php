@@ -11,8 +11,6 @@
 |
  */
 
-Route::get('/', 'HomeController@index')->name('home');
-
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
@@ -28,12 +26,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/doc/new', 'DocDraftController@edit')->name('docDraft.new');
     Route::get('/doc/edit/{docDraft}', 'DocDraftController@edit')->name('docDraft.edit');
     Route::post('/doc/save/{docDraft?}', 'DocDraftController@save')->name('docDraft.save');
+    Route::get('/doc/share/{docDraft}', 'DocDraftController@share')->name('docDraft.share');
     // user category
     Route::post('/folder', 'CategoryController@folder')->name('userCategory.folder');
     Route::post('/categories', 'CategoryController@store')->name('userCategory.store');
     Route::put('/categories/{category}', 'CategoryController@update')->name('userCategory.update');
     // doc
-    Route::get('/doc/list', 'DocController@index')->name('doc.index');
     Route::get('/doc/detail/{doc}', 'DocController@detail')->name('doc.detail');
     Route::get('/doc/search', 'DocController@search')->name('doc.search');
+    // upload
+    Route::post('/upload/docImage', 'UploadController@docImage')->name('upload.docImage');
 });

@@ -62,7 +62,6 @@
 @endsection
 
 @section('scripts')
-<script src="{{ asset('vendor/layer/layer.js') }}"></script>
 <script src="{{ asset('js/sms.js') }}"></script>
 <script>
 $('#sendSms').sms({

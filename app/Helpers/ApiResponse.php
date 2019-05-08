@@ -1,5 +1,5 @@
 <?php
-namespace App\Api\Helpers;
+namespace App\Helpers;
 
 use Response;
 use Symfony\Component\HttpFoundation\Response as FoundationResponse;
@@ -37,7 +37,6 @@ trait ApiResponse
      */
     public function respond($data, $header = [])
     {
-
         return Response::json($data, $this->getStatusCode(), $header);
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -28,5 +29,15 @@ class DocDraft extends Model
     public function user()
     {
         return $this->belongsTo('App\Models\User');
+    }
+
+    public function submitShare()
+    {
+        $this->status = self::STATUS_SUBMIT;
+        $this->submit_at = Carbon::now();
+        $this->update([
+            'status' => $this->status,
+            'submit_at' => $this->submit_at,
+        ]);
     }
 }

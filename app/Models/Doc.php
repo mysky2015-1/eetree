@@ -25,4 +25,10 @@ class Doc extends Model
     {
         return $this->belongsTo('App\Models\User');
     }
+
+    public function countPlus()
+    {
+        $this->view_count++;
+        $this->update(['view_count' => $this->view_count]);
+    }
 }

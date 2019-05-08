@@ -10,6 +10,7 @@ window._ = require('lodash');
 try {
     window.Popper = require('popper.js').default;
     window.$ = window.jQuery = require('jquery');
+    window.layer = require("layui-layer");
 
     require('bootstrap');
 } catch (e) {}
@@ -54,3 +55,26 @@ if (token) {
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     encrypted: true
 // });
+
+// -- hacked by xy
+// 添加请求拦截器
+window.axios.interceptors.request.use(function (config) {
+    // 在发送请求之前做些什么
+    return config;
+}, function (error) {
+    // 对请求错误做些什么
+    return Promise.reject(error);
+});
+
+// 添加响应拦截器
+window.axios.interceptors.response.use(function (response) {
+    return response;
+}, function (error) {
+    if (error.response) {
+      if (error.response.data.code === 400 || error.response.data.code === 422) {
+        layer.msg(error.response.data.message, { icon: 5 });
+      }
+    } else {
+      return Promise.reject(error);
+    }
+});

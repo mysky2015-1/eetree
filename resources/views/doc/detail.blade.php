@@ -6,7 +6,7 @@
         <div class="col-md-8">
             <div class="card">
                 <ul>
-                    @include('_docrow', ['node' => $doc->content['root']])
+                    @include('doc/_docrow', ['node' => $doc->content['root']])
                 </ul>
             </div>
         </div>

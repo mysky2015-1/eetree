@@ -78,8 +78,8 @@ class EetreeTableSeeder extends Seeder
             ]);
             DB::table('doc_draft')->insert([
                 'title' => $faker->title,
-                'content' => $faker->text,
-                'user_id' => rand(1, 49),
+                'content' => '{"root":{"data":{"id":"btxlk2q7ng00","created":"1557279632127","text":"\u4e2d\u5fc3\u4e3b\u9898"}},"template":"default","theme":"fresh-blue","version":"1.4.43"}',
+                'user_id' => 1,
                 'doc_id' => rand(1, 49),
                 'user_category_id' => rand(1, 3),
                 'status' => $status[rand(0, 3)],
@@ -88,16 +88,17 @@ class EetreeTableSeeder extends Seeder
                 'updated_at' => $now,
             ]);
             DB::table('doc')->insert([
-                'user_id' => rand(1, 49),
+                'user_id' => 1,
                 'title' => $faker->title,
-                'content' => $faker->text,
+                'content' => '{"root":{"data":{"id":"btxlk2q7ng00","created":"1557279632127","text":"\u4e2d\u5fc3\u4e3b\u9898"}},"template":"default","theme":"fresh-blue","version":"1.4.43"}',
                 'category_id' => rand(1, 3),
                 'publish_at' => $now,
+                'view_count' => rand(1, 100),
                 'created_at' => $now,
                 'updated_at' => $now,
             ]);
             DB::table('comment')->insert([
-                'user_id' => rand(1, 49),
+                'user_id' => 1,
                 'doc_id' => rand(1, 49),
                 'content' => $faker->text,
                 'active' => rand(0, 1),

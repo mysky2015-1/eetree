@@ -4,6 +4,9 @@
 	<meta charset="utf-8">
     <title>{{ config('app.name', 'Laravel') }}</title>
 
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
 	<link href="favicon.ico" type="image/x-icon" rel="shortcut icon">
 
 	<!-- bower:css -->
@@ -23,17 +26,23 @@
 			height: 100%;
 			overflow: hidden;
 		}
-		h1.editor-title {
+		.editor-title {
 			background: #393F4F;
 			color: white;
-			margin: 0;
 			height: 40px;
+			padding: 0 20px;
+		}
+        .editor-title .doc-name, .editor-title .doc-share {
+			margin: 0 0 0 10px;
 			font-size: 14px;
 			line-height: 40px;
 			font-family: 'Hiragino Sans GB', 'Arial', 'Microsoft Yahei';
 			font-weight: normal;
-			padding: 0 20px;
-		}
+            float:left;
+        }
+        .editor-title .doc-share {
+            cursor: pointer;
+        }
 		div.minder-editor-container {
 			position: absolute;
 			top: 40px;
@@ -44,13 +53,16 @@
 	</style>
 </head>
 <body ng-app="kityminderDemo" ng-controller="MainController">
-<h1 class="editor-title">
-    @if (empty($docDraft))
-        新建文档
-    @else
-        {{ $docDraft['title'] }}
-    @endif
-</h1>
+<div class="editor-title">
+    <h1 class="doc-name">
+        @if (empty($docDraft))
+            新建文档
+        @else
+            {{ $docDraft['title'] }}
+        @endif
+    </h1>
+    <span class="doc-share">分享</span>
+</div>
 <kityminder-editor on-init="initEditor(editor, minder)"></kityminder-editor>
 </body>
 
@@ -77,7 +89,7 @@
 <!-- endbower -->
 
 <script src="{{ asset('bower_components/kityminder-editor/dist/kityminder.editor.min.js') }}"></script>
-<script src="{{ asset('vendor/layer/layer.js') }}"></script>
+<script src="{{ asset('js/app.js') }}"></script>
 
 <script>
     @if (empty($docDraft))
@@ -88,10 +100,21 @@
         var oldMinderData = @json($docDraft['content']);
         var saveUrl = '{{ route('docDraft.save', ['docDraft' => $docDraft['id']]) }}';
         var newDoc = false;
+
+        $('.doc-share').click(function(){
+            axios({
+                method: 'get',
+                url: '{{ route('docDraft.share', ['docDraft' => $docDraft['id']]) }}',
+            }).then(function (res) {
+                layer.msg('分享成功', {icon: 1}, function() {
+                    location.href = '{{ route('home') }}#/doc/list/{{ $docDraft['user_category_id'] ?: '' }}'
+                });
+            });
+        });
     @endif
 	angular.module('kityminderDemo', ['kityminderEditor'])
         .config(function (configProvider) {
-            configProvider.set('imageUpload', '../server/imageUpload.php');
+            configProvider.set('imageUpload', '{{ route('upload.docImage') }}');
         })
         .controller('MainController', function($scope) {
             $scope.initEditor = function(editor, minder) {
@@ -107,36 +130,24 @@
                     var newMinderData = minder.exportJson();
                     if (JSON.stringify(newMinderData) != oldMinderData) {
                         // save
-                        $.post({
+                        axios({
+                            method: 'post',
                             url: saveUrl,
                             data: {
                                 content: newMinderData
                             },
-                            success: function(res) {
-                                if (res.status != 'success') {
-                                    return;
-                                }
-                                if (newDoc) {
-                                    if (window.history && 'pushState' in history) {
-                                        history.replaceState(null, null, res.data.url);
-                                        saveUrl = res.data.saveUrl;
-                                    } else {
-                                        location.href = res.data.url;
-                                    }
-                                }
-                                $('.editor-title').text(newMinderData.root.data.text);
-                                oldMinderData = JSON.stringify(newMinderData);
-                            },
-                            error : function (XMLHttpRequest) {
-                                if (XMLHttpRequest.responseJSON.code == 422) {
-                                    layer.msg(XMLHttpRequest.responseJSON.message);
-                                }
-                            },
+                        }).then(function (res) {
+                            if (newDoc) {
+                                location.href = res.data.data.url;
+                            }
+                            $('.doc-name').text(newMinderData.root.data.text);
+                            oldMinderData = JSON.stringify(newMinderData);
                         });
                     }
                 });
             };
         });
+
 </script>
 
 </html>

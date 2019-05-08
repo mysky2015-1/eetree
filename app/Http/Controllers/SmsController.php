@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Api\Helpers\ApiResponse;
+use App\Helpers\ApiResponse;
 use App\Services\Sms;
 use Illuminate\Http\Request;
 

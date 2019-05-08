@@ -45,6 +45,7 @@ class CreateEetreeTable extends Migration
             $table->string('title', 255);
             $table->text('content');
             $table->timestamp('publish_at')->nullable();
+            $table->integer('view_count')->default(0);
 
             $table->timestamps();
         });
@@ -77,6 +78,15 @@ class CreateEetreeTable extends Migration
             $table->timestamps();
 
             $table->index('doc_id');
+        });
+        Schema::create('file', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name', 50);
+            $table->string('path', 255);
+            $table->string('type', 50);
+            $table->string('mime', 50);
+
+            $table->timestamps();
         });
     }
 

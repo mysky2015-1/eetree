@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Api\Helpers;
+namespace App\Helpers;
 
 use Exception;
 use Illuminate\Http\Request;
