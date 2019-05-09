@@ -16,6 +16,7 @@ class DocDraftResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'doc_id' => $this->doc_id,
             'title' => $this->title,
             'status' => $this->status,
             'created_at' => $this->created_at->format('Y-m-d H:i'),

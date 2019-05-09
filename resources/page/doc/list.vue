@@ -15,7 +15,7 @@
           {{ row.title }}
         </span>
         <span class="float-right">{{ row.created_at }}</span>
-        <a class="float-right" :href="'/doc/detail/' + row.id">
+        <a v-if="row.doc_id !== 0" class="float-right" :href="'/doc/detail/' + row.doc_id">
           查看
         </a>
       </li>

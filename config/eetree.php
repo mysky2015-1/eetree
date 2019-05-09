@@ -7,6 +7,9 @@ return [
     ],
     'limit' => 10,
     'adminLimit' => 10,
+    'upload' => [
+        'max' => 2048,
+    ],
     'menus' => [
         [
             'id' => 1,

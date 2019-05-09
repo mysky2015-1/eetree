@@ -13,7 +13,9 @@
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/', 'DocController@index');
+Route::get('/explore', 'DocController@index')->name('explore');
+Route::get('/category/{category}', 'CategoryController@index')->name('category');
 
 Route::middleware('guest')->group(function () {
     Route::get('password/reset-mobile', 'Auth\ForgotPasswordController@showMobileForm')->name('password.mobile');
@@ -22,10 +24,12 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+    // home
+    Route::get('/home', 'HomeController@index')->name('home');
     // doc draft
     Route::get('/doc/new', 'DocDraftController@edit')->name('docDraft.new');
     Route::get('/doc/edit/{docDraft}', 'DocDraftController@edit')->name('docDraft.edit');
-    Route::post('/doc/save/{docDraft?}', 'DocDraftController@save')->name('docDraft.save');
+    Route::post('/doc/save/{docDraft}', 'DocDraftController@save')->name('docDraft.save');
     Route::get('/doc/share/{docDraft}', 'DocDraftController@share')->name('docDraft.share');
     // user category
     Route::post('/folder', 'CategoryController@folder')->name('userCategory.folder');
@@ -35,5 +39,5 @@ Route::middleware('auth')->group(function () {
     Route::get('/doc/detail/{doc}', 'DocController@detail')->name('doc.detail');
     Route::get('/doc/search', 'DocController@search')->name('doc.search');
     // upload
-    Route::post('/upload/docImage', 'UploadController@docImage')->name('upload.docImage');
+    Route::post('/upload/docImage/{docDraft}', 'UploadController@docImage')->name('upload.docImage');
 });

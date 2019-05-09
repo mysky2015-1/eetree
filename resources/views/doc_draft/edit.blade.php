@@ -55,7 +55,7 @@
 <body ng-app="kityminderDemo" ng-controller="MainController">
 <div class="editor-title">
     <h1 class="doc-name">
-        @if (empty($docDraft))
+        @if (empty($docDraft['title']))
             新建文档
         @else
             {{ $docDraft['title'] }}
@@ -92,13 +92,11 @@
 <script src="{{ asset('js/app.js') }}"></script>
 
 <script>
-    @if (empty($docDraft))
+    @if (empty($docDraft['title']))
         var oldMinderData = '';
-        var saveUrl = '{{ route('docDraft.save') }}';
         var newDoc = true;
     @else
         var oldMinderData = @json($docDraft['content']);
-        var saveUrl = '{{ route('docDraft.save', ['docDraft' => $docDraft['id']]) }}';
         var newDoc = false;
 
         $('.doc-share').click(function(){
@@ -106,7 +104,7 @@
                 method: 'get',
                 url: '{{ route('docDraft.share', ['docDraft' => $docDraft['id']]) }}',
             }).then(function (res) {
-                layer.msg('分享成功', {icon: 1}, function() {
+                layer.msg('分享成功，待管理员审核', {icon: 1}, function() {
                     location.href = '{{ route('home') }}#/doc/list/{{ $docDraft['user_category_id'] ?: '' }}'
                 });
             });
@@ -114,7 +112,7 @@
     @endif
 	angular.module('kityminderDemo', ['kityminderEditor'])
         .config(function (configProvider) {
-            configProvider.set('imageUpload', '{{ route('upload.docImage') }}');
+            configProvider.set('imageUpload', '{{ route('upload.docImage', ['docDraft' => $docDraft['id']]) }}');
         })
         .controller('MainController', function($scope) {
             $scope.initEditor = function(editor, minder) {
@@ -132,7 +130,7 @@
                         // save
                         axios({
                             method: 'post',
-                            url: saveUrl,
+                            url: '{{ route('docDraft.save', ['docDraft' => $docDraft['id']]) }}',
                             data: {
                                 content: newMinderData
                             },

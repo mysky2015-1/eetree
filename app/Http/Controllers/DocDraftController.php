@@ -18,15 +18,27 @@ class DocDraftController extends Controller
             if ($checked !== true) {
                 return $checked;
             }
-            return view('doc_draft/edit', [
-                'docDraft' => $docDraft->toArray(),
-            ]);
         } else {
-            return view('doc_draft/edit');
+            $userId = Auth::id();
+            $docDraft = DocDraft::where([
+                'user_id' => $userId,
+                'title' => '',
+            ])->first();
+            if (empty($docDraft)) {
+                $docDraft = new DocDraft;
+                $docDraft->user_id = $userId;
+                $docDraft->title = '';
+                $docDraft->content = '';
+                $docDraft->review_remarks = '';
+                $docDraft->save();
+            }
         }
+        return view('doc_draft/edit', [
+            'docDraft' => $docDraft->toArray(),
+        ]);
     }
 
-    public function save(DocDraft $docDraft = null, Request $request)
+    public function save(DocDraft $docDraft, Request $request)
     {
         $userId = Auth::id();
         $content = $request->input('content');
@@ -34,18 +46,9 @@ class DocDraftController extends Controller
             return $this->failed('error');
         }
         $title = $content['root']['data']['text'];
-        if ($docDraft) {
-            $checked = $this->_checkDoc($docDraft);
-            if ($checked !== true) {
-                return $checked;
-            }
-            $docDraft->title = $title;
-            $docDraft->content = $content;
-            $docDraft->save();
-        } else {
-            $docDraft = new DocDraft;
-            $docDraft->user_id = $userId;
-            $docDraft->review_remarks = '';
+        $checked = $this->_checkDoc($docDraft);
+        if ($checked !== true) {
+            return $checked;
         }
         $docDraft->title = $title;
         $docDraft->content = $content;
@@ -67,11 +70,9 @@ class DocDraftController extends Controller
         return $this->success();
     }
 
-    private function _checkDoc($docDraft, $userId = 0)
+    private function _checkDoc($docDraft)
     {
-        if ($userId === 0) {
-            $userId = Auth::id();
-        }
+        $userId = Auth::id();
         if ($docDraft->user_id != $userId) {
             return $this->failed('无权限');
         }

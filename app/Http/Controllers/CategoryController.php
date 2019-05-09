@@ -6,6 +6,8 @@ use App\Helpers\ApiResponse;
 use App\Http\Requests\Api\UserCategoryRequest;
 use App\Http\Resources\DocDraftResource;
 use App\Http\Resources\UserCategoryResource;
+use App\Models\Category;
+use App\Models\Doc;
 use App\Models\DocDraft;
 use App\Models\UserCategory;
 use Illuminate\Http\Request;
@@ -14,6 +16,17 @@ use Illuminate\Support\Facades\Auth;
 class CategoryController extends Controller
 {
     use ApiResponse;
+
+    public function index(Category $category, Request $request)
+    {
+        $params = $request->all();
+        $params['category_id'] = $category->id;
+        $docs = Doc::search($params);
+
+        return view('doc/index', [
+            'docs' => $docs,
+        ]);
+    }
 
     public function folder(Request $request)
     {
@@ -28,6 +41,7 @@ class CategoryController extends Controller
         $docs = DocDraft::where([
             ['user_id', $userId],
             ['user_category_id', $parentId],
+            ['title', '<>', ''],
         ])->get();
 
         return $this->success([

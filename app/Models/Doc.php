@@ -8,12 +8,14 @@ class Doc extends Model
 {
     protected $table = 'doc';
 
-    protected $fillable = [
-        'category_id', 'title', 'content',
-    ];
+    protected $dates = ['publish_at'];
 
     protected $casts = [
         'content' => 'array',
+    ];
+
+    protected $fillable = [
+        'category_id', 'title', 'content',
     ];
 
     public function comments()
@@ -30,5 +32,19 @@ class Doc extends Model
     {
         $this->view_count++;
         $this->update(['view_count' => $this->view_count]);
+    }
+
+    public static function search($params)
+    {
+        $where = [
+            ['publish_at', '>', 0],
+        ];
+        if (!empty($params['q'])) {
+            $where[] = ['title', 'like', '%' . $params['q'] . '%'];
+        }
+        if (!empty($params['category_id'])) {
+            $where[] = ['category_id', $params['category_id']];
+        }
+        return self::with('user')->where($where)->paginate(config('eetree.limit'));
     }
 }

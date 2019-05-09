@@ -37,6 +37,7 @@ class CreateEetreeTable extends Migration
             $table->softDeletes();
 
             $table->index('doc_id');
+            $table->index('user_id');
         });
         Schema::create('doc', function (Blueprint $table) {
             $table->increments('id');
@@ -85,6 +86,7 @@ class CreateEetreeTable extends Migration
             $table->string('path', 255);
             $table->string('type', 50);
             $table->string('mime', 50);
+            $table->integer('pid')->default(0);
 
             $table->timestamps();
         });

@@ -16,7 +16,7 @@ Route::namespace ('Api')->middleware('cors')->group(function () {
     Route::middleware('admin.guard')->prefix('admin')->group(function () {
         //管理员登录
         Route::post('/login', 'AdminController@login')->name('admin.login');
-        Route::middleware(['admin.refresh', 'admin.permission'])->group(function () {
+        Route::middleware(['jwt.auth', 'admin.permission'])->group(function () {
             //管理员列表
             Route::get('/admins', 'AdminController@index')->name('admin.list');
             //创建管理员

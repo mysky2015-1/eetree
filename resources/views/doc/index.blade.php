@@ -1,39 +1,38 @@
 @extends('layouts.app')
+@section('title', '搜索')
 
 @section('content')
 <div class="container">
-    <table class="table table-striped">
-        <thead>
-            <tr>
-            <th scope="col">#</th>
-            <th scope="col">文档名</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <th scope="row">1</th>
-                <td></td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                @if (empty($docs))
+                    未查询到相关文档
+                @else
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                            <th scope="col">作者</th>
+                            <th scope="col">文档名</th>
+                            <th scope="col">更新时间</th>
+                            <th scope="col">阅读量</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($docs as $doc)
+                                <tr>
+                                    <td>{{ $doc->user->nickname }}</td>
+                                    <td><a href="{{ route('doc.detail', ['doc' => $doc->id]) }}">{{ $doc->title }}</a></td>
+                                    <td>{{ $doc->publish_at->format('Y-m-d') }}</td>
+                                    <td>{{ $doc->view_count }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                    {{ $docs->links() }}
+                @endif
+            </div>
+        </div>
+    </div>
 </div>
-@endsection
-
-@section('beforeScripts')
-<script>
-var needVue = true;
-</script>
-@endsection
-@section('scripts')
-<script>
-axios({
-    method: 'post',
-    url: '{{ route('userCategory.folder') }}',
-    data: {
-        id: 0
-    },
-}).then(function (res) {
-    console.log(res.data.data)
-});
-</script>
 @endsection
