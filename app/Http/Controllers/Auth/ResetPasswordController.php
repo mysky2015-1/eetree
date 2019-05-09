@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Services\Sms;
+use App\Services\SmsService;
 use Illuminate\Contracts\Auth\PasswordBroker;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Http\Request;
@@ -52,7 +52,7 @@ class ResetPasswordController extends Controller
     public function resetByMobile(Request $request)
     {
         if (empty($request->password)) {
-            if (!Sms::verify($request->input('mobile'), $request->input('verify_code'))) {
+            if (!SmsService::verify($request->input('mobile'), $request->input('verify_code'))) {
                 return back()
                     ->withInput($request->only('mobile'))
                     ->withErrors(['verify_code' => '验证码错误']);
@@ -92,13 +92,13 @@ class ResetPasswordController extends Controller
         if (empty($user)) {
             return '找不到该用户';
         }
-        if (!Sms::verify($credentials['mobile'], $credentials['verify_code'])) {
+        if (!SmsService::verify($credentials['mobile'], $credentials['verify_code'])) {
             return '验证码过期';
         }
         $pass = $credentials['password'];
         call_user_func($callback, $user, $pass);
 
-        Sms::clear($credentials['mobile']);
+        SmsService::clear($credentials['mobile']);
         return PasswordBroker::PASSWORD_RESET;
     }
 }

@@ -1,11 +1,10 @@
 <?php
 namespace App\Services;
 
-use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Cache;
+use Toplan\PhpSms\Sms as PhpSms;
 
-// use Toplan\PhpSms\Sms as PhpSms;
-
-class Sms
+class SmsService
 {
     public static function code($mobile, $key = 'default')
     {
@@ -13,7 +12,7 @@ class Sms
         $templates = config('eetree.sms');
         $result = PhpSms::make($templates[$key])->to($mobile)->data([$code])->send();
         if ($result === null || $result === true || (isset($result['success']) && $result['success'])) {
-            Redis::setEx(sprintf('smscode:mobile:%s:%s', $mobile, $key), 3000, $code);
+            Cache::put(sprintf('smscode:mobile:%s:%s', $mobile, $key), $code, 300);
             return $code;
         }
         return false;
@@ -21,7 +20,7 @@ class Sms
 
     public static function verify($mobile, $code, $key = 'default')
     {
-        if (Redis::get(sprintf('smscode:mobile:%s:%s', $mobile, $key)) == $code) {
+        if (Cache::get(sprintf('smscode:mobile:%s:%s', $mobile, $key)) == $code) {
             return true;
         } else {
             return false;
@@ -30,6 +29,6 @@ class Sms
 
     public static function clear($mobile, $key = 'default')
     {
-        Redis::del(sprintf('smscode:mobile:%s:%s', $mobile, $key));
+        Cache::forget(sprintf('smscode:mobile:%s:%s', $mobile, $key));
     }
 }

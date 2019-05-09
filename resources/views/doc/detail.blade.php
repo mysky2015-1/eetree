@@ -8,7 +8,7 @@
         <div class="col-md-8">
             <div class="card">
                 <ul>
-                    @include('doc/_docrow', ['node' => $doc->content['root'], 'depth' => 1])
+                    @include('doc._docrow', ['node' => $doc->content['root'], 'depth' => 1])
                 </ul>
             </div>
         </div>

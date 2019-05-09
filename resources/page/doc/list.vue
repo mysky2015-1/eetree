@@ -1,6 +1,8 @@
 <template>
   <div class="panel panel-default">
     <div class="panel-heading">我的文档</div>
+    <button type="button" class="btn btn-primary">新建分类</button>
+    <a class="btn btn-primary" href="/doc/new">新建文档</a>
     <ul class="list-group">
       <li class="list-group-item" v-for="row in categories" :key="row.id">
         <router-link :to="{path:'/doc/list/' + row.id}">
@@ -37,7 +39,6 @@ export default{
     }
   },
   created() {
-		console.log(this.$route.params.id)
     this.getDocList(this.$route.params.id || 0);  
 	},
   methods: {

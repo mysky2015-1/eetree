@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ApiResponse;
-use App\Services\Sms;
+use App\Services\SmsService;
 use Illuminate\Http\Request;
 
 class SmsController extends Controller
@@ -16,7 +16,7 @@ class SmsController extends Controller
         if (!preg_match('/^1[0-9]{10}$/', $mobile)) {
             return $this->error('手机格式有误');
         }
-        $code = Sms::code($mobile);
+        $code = SmsService::code($mobile);
         if ($code) {
             return $this->success();
         } else {

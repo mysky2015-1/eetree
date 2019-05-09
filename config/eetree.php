@@ -5,6 +5,9 @@ return [
             'SendCloud' => 1,
         ],
     ],
+    'cache' => [
+        'ttl' => 600,
+    ],
     'limit' => 10,
     'adminLimit' => 10,
     'upload' => [

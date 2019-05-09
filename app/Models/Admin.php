@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Facades\Cache;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class Admin extends Authenticatable implements JWTSubject
@@ -69,18 +69,13 @@ class Admin extends Authenticatable implements JWTSubject
 
     public function allPermissions()
     {
-        $permissions = false; //TODORedis::get('admin:permissions:' . $this->id);
-        if (empty($permissions)) {
-            $permissions = $this->roles()->with('permissions')->get()->pluck('permissions')->flatten()->unique(function ($item) {
+        return Cache::remember('admin:permissions:' . $this->id, config('eetree.cache.ttl'), function () {
+            return $this->roles()->with('permissions')->get()->pluck('permissions')->flatten()->unique(function ($item) {
                 return $item->id;
             })->map(function ($item, $key) {
                 return $item->only(['name', 'http_method', 'http_path']);
             });
-            Redis::set('admin:permissions:' . $this->id, $permissions);
-        } else {
-            $permissions = collect(json_decode($permissions, true));
-        }
-        return $permissions;
+        });
     }
 
     /**
@@ -95,16 +90,11 @@ class Admin extends Authenticatable implements JWTSubject
 
     public function roleMenus()
     {
-        $menus = false; //TODORedis::get('admin:menus:' . $this->id);
-        if (empty($menus)) {
+        return Cache::remember('admin:menus:' . $this->id, config('eetree.cache.ttl'), function () {
             $menuIds = $this->menus->pluck('menu_id')->toArray();
             $allMenus = config('eetree.menus');
-            $menus = $this->setMenus($allMenus, $menuIds);
-            Redis::set('admin:menus:' . $this->id, json_encode($menus));
-        } else {
-            $menus = collect(json_decode($menus, true));
-        }
-        return $menus;
+            return $this->setMenus($allMenus, $menuIds);
+        });
     }
 
     public function setMenus($menus, $menuIds)
