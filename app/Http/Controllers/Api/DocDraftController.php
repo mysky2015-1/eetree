@@ -37,14 +37,14 @@ class DocDraftController extends Controller
                     }
                     $doc->fill($docDraft->toArray());
                     $doc->publish_at = Carbon::now();
+                    $doc->category_id = $data['category_id'];
                     $doc->save();
-                    $updated = true;
-                }
-                if (empty($updated)) {
+                } else {
                     $row = $docDraft->toArray();
                     $doc = new Doc;
                     $doc->fill($row);
                     $doc->user_id = $row['user_id'];
+                    $doc->category_id = $data['category_id'];
                     $doc->publish_at = Carbon::now();
                     $doc->save();
                     $docDraft->update(['doc_id' => $doc->id]);

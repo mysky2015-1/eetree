@@ -17,6 +17,9 @@ class DocDraftRequest extends FormRequest
                 $rules = [
                     'status' => ['required', 'in:' . implode(',', [DocDraft::STATUS_REFUSE, DocDraft::STATUS_PASS])],
                 ];
+                if ($this->status == DocDraft::STATUS_PASS) {
+                    $rules['category_id'] = ['required'];
+                }
                 if ($this->status == DocDraft::STATUS_REFUSE) {
                     $rules['review_remarks'] = ['required'];
                 }
@@ -35,6 +38,7 @@ class DocDraftRequest extends FormRequest
             'status.required' => '审核状态不能为空',
             'status.in' => '审核状态不正确',
             'review_remarks.required' => '拒绝原因不能为空',
+            'category_id.required' => '分类不能为空',
         ];
     }
 }

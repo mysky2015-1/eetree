@@ -2,7 +2,7 @@
 return [
     'sms' => [
         'default' => [
-            'SendCloud' => 1,
+            'Aliyun' => 'SMS_165285030',
         ],
     ],
     'cache' => [
