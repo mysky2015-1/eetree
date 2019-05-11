@@ -19,6 +19,9 @@ class DocDraftResource extends JsonResource
             'title' => $this->title,
             'created_at' => $this->created_at->format('Y-m-d H:i:s'),
             'submit_at' => $this->submit_at ? $this->submit_at->format('Y-m-d H:i:s') : '',
+            'doc' => [
+                'category_id' => $this->doc ? $this->doc->category_id : 0,
+            ],
             'user' => [
                 'nickname' => $this->user->nickname,
             ],

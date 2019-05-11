@@ -31,6 +31,11 @@ class DocDraft extends Model
         return $this->belongsTo('App\Models\User');
     }
 
+    public function doc()
+    {
+        return $this->belongsTo('App\Models\Doc');
+    }
+
     public function submitShare()
     {
         $this->status = self::STATUS_SUBMIT;

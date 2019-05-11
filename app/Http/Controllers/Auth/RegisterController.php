@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Services\SmsService;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -50,6 +51,11 @@ class RegisterController extends Controller
     {
         return Validator::make($data, [
             'mobile' => ['required', 'string', 'regex:/^1[0-9]{10}$/', 'unique:user'],
+            'verify_code' => ['required', function ($attribute, $value, $fail) use ($data) {
+                if (!SmsService::verify($data['mobile'], $value)) {
+                    $fail('验证码错误');
+                }
+            }],
             'name' => ['required', 'string', 'regex:/^[a-zA-Z][a-zA-Z_\-]+$/', 'max:255'],
             'nickname' => ['required', 'string', 'max:255'],
             'password' => ['required', 'string', 'min:8'],
@@ -70,5 +76,6 @@ class RegisterController extends Controller
             'nickname' => $data['nickname'],
             'password' => Hash::make($data['password']),
         ]);
+        SmsService::clear($data['mobile']);
     }
 }

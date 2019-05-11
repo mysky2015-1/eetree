@@ -13,7 +13,7 @@ class DocDraftController extends Controller
     //返回菜单列表
     public function index(DocDraftRequest $request)
     {
-        $docDrafts = DocDraft::with('user')
+        $docDrafts = DocDraft::with(['user', 'doc'])
             ->where('status', $request->input('status'))
             ->orderBy('created_at', 'desc')
             ->paginate(config('eetree.adminLimit'));

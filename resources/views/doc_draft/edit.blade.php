@@ -52,7 +52,7 @@
 		}
 	</style>
 </head>
-<body ng-app="kityminderDemo" ng-controller="MainController">
+<body ng-app="editDocApp" ng-controller="MainController">
 <div class="editor-title">
     <h1 class="doc-name">
         @if (empty($docDraft['title']))
@@ -110,7 +110,7 @@
             });
         });
     @endif
-	angular.module('kityminderDemo', ['kityminderEditor'])
+	angular.module('editDocApp', ['kityminderEditor'])
         .config(function (configProvider) {
             configProvider.set('imageUpload', '{{ route('upload.docImage', ['docDraft' => $docDraft['id']]) }}');
         })

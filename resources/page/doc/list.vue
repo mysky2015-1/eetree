@@ -1,7 +1,7 @@
 <template>
   <div class="panel panel-default">
     <div class="panel-heading">我的文档</div>
-    <button type="button" class="btn btn-primary">新建分类</button>
+    <button type="button" class="btn btn-primary" @click="dialogVisible=true">新建分类</button>
     <a class="btn btn-primary" href="/doc/new">新建文档</a>
     <ul class="list-group">
       <li class="list-group-item" v-for="row in categories" :key="row.id">
@@ -22,6 +22,25 @@
         </a>
       </li>
     </ul>
+<div class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Modal body text goes here.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
   </div>
 </template>
 <script>

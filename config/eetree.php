@@ -1,10 +1,5 @@
 <?php
 return [
-    'sms' => [
-        'default' => [
-            'Aliyun' => 'SMS_165285030',
-        ],
-    ],
     'cache' => [
         'ttl' => 600,
     ],
