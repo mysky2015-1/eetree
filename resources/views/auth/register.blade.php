@@ -98,7 +98,6 @@
 @endsection
 
 @section('scripts')
-<script src="{{ asset('js/sms.js') }}"></script>
 <script>
 $('#sendSms').sms({
     //laravel csrf token
@@ -111,6 +110,7 @@ $('#sendSms').sms({
         mobile : function () {
             return $('#mobile').val();
         },
+        tpl: 'register',
     }
 });
 </script>

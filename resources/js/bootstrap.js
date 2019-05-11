@@ -74,7 +74,6 @@ window.axios.interceptors.response.use(function (response) {
       if (error.response.data.code === 400 || error.response.data.code === 422) {
         layer.msg(error.response.data.message, { icon: 5 });
       }
-    } else {
-      return Promise.reject(error);
     }
+    return Promise.reject(error);
 });

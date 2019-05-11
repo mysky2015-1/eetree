@@ -1,6 +1,7 @@
 <?php
 namespace App\Services;
 
+use AlibabaCloud\Client\AlibabaCloud;
 use AlibabaCloud\Client\Exception\ClientException;
 use AlibabaCloud\Client\Exception\ServerException;
 use Illuminate\Support\Facades\Cache;

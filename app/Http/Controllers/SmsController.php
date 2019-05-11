@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Helpers\ApiResponse;
 use App\Services\SmsService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class SmsController extends Controller
 {
@@ -12,11 +13,15 @@ class SmsController extends Controller
 
     public function code(Request $request)
     {
-        $mobile = $request->input('mobile');
-        if (!preg_match('/^1[0-9]{10}$/', $mobile)) {
-            return $this->error('手机格式有误');
+        $data = $request->all();
+        $mobileRule = ['required', 'string', 'regex:/^1[0-9]{10}$/'];
+        if ($data['tpl'] === 'register') {
+            $mobileRule[] = 'unique:user';
         }
-        $code = SmsService::code($mobile);
+        Validator::make($data, [
+            'mobile' => $mobileRule,
+        ])->validate();
+        $code = SmsService::code($data['mobile']);
         if ($code) {
             return $this->success();
         } else {
