@@ -37,7 +37,7 @@
                                     </span>
                                 @endif
                             </div>
-                            <input id="sendSms" type="button" value="发送验证码">
+                            <input class="btn-send" id="sendSms" type="button" value="发送验证码">
                         </div>
 
                         <div class="form-group row">
