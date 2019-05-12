@@ -5,6 +5,10 @@ return [
     ],
     'limit' => 10,
     'adminLimit' => 10,
+    'usercategory' => [
+        'max' => 50,
+        'maxNode' => 100, //每一级最多文件夹及文件个数
+    ],
     'upload' => [
         'max' => 2048,
     ],

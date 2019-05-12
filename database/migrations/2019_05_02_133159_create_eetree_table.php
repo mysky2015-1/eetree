@@ -66,6 +66,7 @@ class CreateEetreeTable extends Migration
             $table->string('name', 50);
 
             $table->timestamps();
+            $table->softDeletes();
 
             $table->index('user_id');
         });

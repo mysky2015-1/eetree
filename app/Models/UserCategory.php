@@ -3,9 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class UserCategory extends Model
 {
+    use SoftDeletes;
+
     protected $table = 'user_category';
 
     protected $fillable = [
@@ -20,9 +23,9 @@ class UserCategory extends Model
         return $this->hasMany(__CLASS__, 'parent_id');
     }
 
-    public static function getTree()
+    public static function getTree($userId)
     {
-        $all = static::orderBy('order', 'asc')->get();
+        $all = static::where('user_id', $userId)->orderBy('order', 'asc')->get();
         return \App\Helpers\Tree::make($all);
     }
 }

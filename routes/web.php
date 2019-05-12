@@ -32,12 +32,16 @@ Route::middleware('auth')->group(function () {
     Route::post('/doc/save/{docDraft}', 'DocDraftController@save')->name('docDraft.save');
     Route::get('/doc/share/{docDraft}', 'DocDraftController@share')->name('docDraft.share');
     // user category
-    Route::post('/folder', 'CategoryController@folder')->name('userCategory.folder');
-    Route::post('/categories', 'CategoryController@store')->name('userCategory.store');
-    Route::put('/categories/{category}', 'CategoryController@update')->name('userCategory.update');
+    Route::post('/folder', 'UserCategoryController@folder')->name('userCategory.folder');
+    Route::post('/categories', 'UserCategoryController@store')->name('userCategory.store');
+    Route::put('/categories/{category}', 'UserCategoryController@update')->name('userCategory.update');
+    Route::delete('/categories/{category}', 'UserCategoryController@delete')->name('userCategory.delete');
+    Route::put('/categories/{category}/move', 'UserCategoryController@move')->name('userCategory.move');
     // doc
     Route::get('/doc/detail/{doc}', 'DocController@detail')->name('doc.detail');
     Route::get('/doc/search', 'DocController@search')->name('doc.search');
+    Route::delete('/docs/{doc}', 'DocDraftController@delete')->name('docDraft.delete');
+
     // upload
     Route::post('/upload/docImage/{docDraft}', 'UploadController@docImage')->name('upload.docImage');
 });
