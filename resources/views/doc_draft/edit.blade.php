@@ -55,11 +55,7 @@
 <body ng-app="editDocApp" ng-controller="MainController">
 <div class="editor-title">
     <h1 class="doc-name">
-        @if (empty($docDraft['title']))
-            新建文档
-        @else
-            {{ $docDraft['title'] }}
-        @endif
+        {{ $docDraft['title'] }}
     </h1>
     <span class="doc-share">分享</span>
 </div>
@@ -92,24 +88,18 @@
 <script src="{{ asset('js/app.js') }}"></script>
 
 <script>
-    @if (empty($docDraft['title']))
-        var oldMinderData = '';
-        var newDoc = true;
-    @else
-        var oldMinderData = @json($docDraft['content']);
-        var newDoc = false;
+    var oldMinderData = @json($docDraft['content']);
 
-        $('.doc-share').click(function(){
-            axios({
-                method: 'get',
-                url: '{{ route('docDraft.share', ['docDraft' => $docDraft['id']]) }}',
-            }).then(function (res) {
-                layer.msg('分享成功，待管理员审核', {icon: 1}, function() {
-                    location.href = '{{ route('home') }}#/doc/list/{{ $docDraft['user_category_id'] ?: '' }}'
-                });
+    $('.doc-share').click(function(){
+        axios({
+            method: 'get',
+            url: '{{ route('docDraft.share', ['docDraft' => $docDraft['id']]) }}',
+        }).then(function (res) {
+            layer.msg('分享成功，待管理员审核', {icon: 1}, function() {
+                location.href = '{{ route('home') }}#/doc/list/{{ $docDraft['user_category_id'] ?: '' }}'
             });
         });
-    @endif
+    });
 	angular.module('editDocApp', ['kityminderEditor'])
         .config(function (configProvider) {
             configProvider.set('imageUpload', '{{ route('upload.docImage', ['docDraft' => $docDraft['id']]) }}');
@@ -122,26 +112,28 @@
                 if (typeof oldMinderData == 'object') {
                     minder.importJson(oldMinderData);
                     oldMinderData = JSON.stringify(oldMinderData);
+                } else {
+                    minder.select(minder.getRoot(), true);
+                    minder.execCommand('text', '{{ $docDraft['title'] }}');
                 }
 
                 minder.on('contentchange', function() {
-                    var newMinderData = minder.exportJson();
-                    if (JSON.stringify(newMinderData) != oldMinderData) {
-                        // save
-                        axios({
-                            method: 'post',
-                            url: '{{ route('docDraft.save', ['docDraft' => $docDraft['id']]) }}',
-                            data: {
-                                content: newMinderData
-                            },
-                        }).then(function (res) {
-                            if (newDoc) {
-                                location.href = res.data.data.url;
-                            }
-                            $('.doc-name').text(newMinderData.root.data.text);
-                            oldMinderData = JSON.stringify(newMinderData);
-                        });
-                    }
+                    setTimeout(function() {
+                        var newMinderData = minder.exportJson();
+                        if (JSON.stringify(newMinderData) != oldMinderData) {
+                            // save
+                            axios({
+                                method: 'put',
+                                url: '{{ route('docDraft.save', ['docDraft' => $docDraft['id']]) }}',
+                                data: {
+                                    content: newMinderData
+                                },
+                            }).then(function (res) {
+                                $('.doc-name').text(newMinderData.root.data.text);
+                                oldMinderData = JSON.stringify(newMinderData);
+                            });
+                        }
+                    }, 500);
                 });
             };
         });
