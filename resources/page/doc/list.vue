@@ -1,18 +1,21 @@
 <template>
   <div class="panel panel-default">
     <div class="panel-heading">我的文档</div>
+    <router-link v-if="categoryId !== 0" tag="b-button" :to="{path: parentId === 0 ? '/doc/list/' : '/doc/list/' + parentId}">
+      &lt;&lt; 上一级
+    </router-link>
     <b-button @click="newCategory">新建文件夹</b-button>
     <b-button @click="newDoc">新建文档</b-button>
     <ul class="list-group">
-      <li class="list-group-item" v-for="row in categories" :key="row.id">
+      <li class="list-group-item" v-for="row in categories" :key="'c' + row.id">
         <router-link :to="{path:'/doc/list/' + row.id}">
 					{{ row.name }}
         </router-link>
-        <span class="float-right" @click="showMove(row)">移动到</span>
-        <span class="float-right" @click="editCategory(row)">重命名</span>
-        <span class="float-right" @click="delCategory(row)">删除</span>
+        <b-button class="float-right" @click="showMove(row)">移动到</b-button>
+        <b-button class="float-right" @click="editCategory(row)">重命名</b-button>
+        <b-button class="float-right" @click="delCategory(row)">删除</b-button>
       </li>
-      <li class="list-group-item" v-for="row in docs" :key="row.id">
+      <li class="list-group-item" v-for="row in docs" :key="'d' + row.id">
         <a v-if="row.status != 1" :href="'/doc/edit/' + row.id">
           {{ row.title }}
         </a>
@@ -23,7 +26,7 @@
         <a v-if="row.doc_id !== 0" class="float-right" :href="'/doc/detail/' + row.doc_id">
           查看
         </a>
-        <span class="float-right" @click="delDoc(row)">删除</span>
+        <b-button class="float-right" @click="delDoc(row)">删除</b-button>
       </li>
     </ul>
     <div class="modal fade" id="categoryModal" tabindex="-1" role="dialog" aria-labelledby="categoryModalLabel" aria-hidden="true">
@@ -45,13 +48,11 @@
         </div>
       </div>
     </div>
-    <b-modal title="移动到" @ok="moveCategory()">
-      category tree
+    <b-modal ref="move-modal" title="移动到" @ok="moveCategory()">
+      <ul class="list-group">
+        <xy-folder :list="moveCategories" @nodeClick="selectDestCategory"></xy-folder>
+      </ul>
     </b-modal>
-
-  <b-modal id="modal-1" title="BootstrapVue">
-    <p class="my-4">Hello from modal!</p>
-  </b-modal>
 
   </div>
 </template>
@@ -71,34 +72,60 @@ var modalFun = {
     $('#categoryModal').modal('hide');
   }
 };
-import { getDocList, newCategory, editCategory, delCategory, moveCategory, delDoc, newDoc } from '../../js/api';
-import { deepClone } from '../../js/utils';
+import { getDocList, delDoc, newDoc, getCategoryList, newCategory, editCategory, delCategory, moveCategory } from '../../js/api';
+import { deepClone, unflatten } from '../../js/utils';
 export default{
   data() {
     return {
-      parent_id: this.$route.params.id || 0,
+      categoryId: this.$route.params.id || 0,
+      parentId: 0,
       docs: [],
+      moveCategories: [],
       categories: [],
       dialogType: 'new',
       category: Object.assign({}, defaultCategory),
-      destCategory: Object.assign({}, defaultCategory),
+      destCategoryId: 0,
     }
   },
   created() {
     this.getDocList();  
-	},
+  },
   methods: {
     getDocList() {
-      getDocList(this.parent_id).then((res) => {
+      getDocList(this.categoryId).then((res) => {
 				const data = res.data
 				this.docs = data.data.docs;
-				this.categories = data.data.categories;
+        this.categories = data.data.categories;
+        if (typeof data.data.category.parent_id !== 'undefined') {
+          this.parentId = data.data.category.parent_id
+        }
 			})
     },
     newDoc() {
       newDoc().then((res) => {
 				location.href = res.data.data.url;
 			})
+    },
+    delDoc(row) {
+      this.$bvModal.msgBoxConfirm('确定该文档吗?', {
+        okTitle: '确定',
+        cancelTitle: '取消',
+      }).then(confirmOk => {
+        if (confirmOk === true) {
+          delDoc(row.id).then(() => {
+            this.$bvToast.toast('操作成功', {
+              title: 'Success',
+              variant: 'success',
+            })
+            for (let index = 0; index < this.docs.length; index++) {
+              if (this.docs[index].id === row.id) {
+                this.docs.splice(index, 1)
+                break
+              }
+            }
+          });
+        }
+      })
     },
     focusCategoryName(event) {
       event.currentTarget.select();
@@ -115,7 +142,7 @@ export default{
     },
     submitCategory() {
       if (this.dialogType === 'new') {
-        newCategory({name: this.category.name, parent_id: this.parent_id}).then((res) => {
+        newCategory({name: this.category.name, parent_id: this.categoryId}).then((res) => {
           this.$bvToast.toast('操作成功', {
             title: 'Success',
             variant: 'success',
@@ -163,23 +190,51 @@ export default{
     },
     showMove(row) {
       this.category = deepClone(row)
-      allCategories()
+      getCategoryList().then((res) => {
+        res.data.data.forEach(element => {
+          element.selected = false
+        })
+        const moveCategories = res.data.data.filter((category) => {
+          return category.id !== this.category.id
+        }, this)
+        this.moveCategories = [{
+          id: 0,
+          name: 'root',
+          selected: false,
+          children: unflatten(moveCategories)
+        }];
+        this.$refs['move-modal'].show()
+			})
+    },
+    selectDestCategory(row) {
+      this.unselectCategory(this.moveCategories)
+      row.selected = true
+      this.destCategoryId = row.id
+    },
+    unselectCategory(items) {
+      items.forEach(element => {
+        element.selected = false
+        if (typeof element.children !== 'undefined' && element.children.length > 0) {
+          this.unselectCategory(element.children)
+        }
+      });
     },
     moveCategory() {
-      if (this.category.id === this.destCategory.id) {
+      if (this.category.id === this.destCategoryId || this.category.parent_id === this.destCategoryId) {
         return false;
       }
-      moveCategory(this.category.id, this.destCategory.id).then(() => {
+      moveCategory(this.category.id, this.destCategoryId).then(() => {
         this.$bvToast.toast('操作成功', {
           title: 'Success',
           variant: 'success',
         })
-        for (let index = 0; index < this.categories.length; index++) {
-          if (this.categories[index].id === row.id) {
-            this.categories.splice(index, 1)
-            break
-          }
-        }
+        // for (let index = 0; index < this.categories.length; index++) {
+        //   if (this.categories[index].id === row.id) {
+        //     this.categories.splice(index, 1)
+        //     break
+        //   }
+        // }
+        this.$router.push({path:this.destCategoryId === 0 ? '/doc/list/' : '/doc/list/' + this.destCategoryId})
       });
     }
 	},

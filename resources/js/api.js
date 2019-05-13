@@ -4,10 +4,7 @@ export function getDocList(id) {
     id = id || 0;
     return axios({
         method: 'post',
-        url: '/folder',
-        data: {
-            id
-        },
+        url: id === 0 ? '/folder' : 'folder/' + id,
     })
 }
 
@@ -22,7 +19,13 @@ export function delDoc(id) {
     return axios({
         method: 'delete',
         url: '/draftDocs/' + id,
-        data,
+    })
+}
+
+export function getCategoryList() {
+    return axios({
+        method: 'get',
+        url: '/userCategories',
     })
 }
 
@@ -51,7 +54,7 @@ export function delCategory(id) {
 
 export function moveCategory(srcId, destId) {
     const data = { dest: destId }
-    return request({
+    return axios({
       url: '/categories/' + srcId + '/move',
       method: 'put',
       data

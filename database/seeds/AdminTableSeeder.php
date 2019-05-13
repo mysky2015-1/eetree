@@ -17,8 +17,8 @@ class AdminTableSeeder extends Seeder
         // ]);
         $now = Carbon::now();
         DB::table('admin')->insert([
-            'name' => 'admin',
-            'password' => bcrypt('admin'),
+            'name' => 'eetree',
+            'password' => bcrypt('eetree'),
             'created_at' => $now,
             'updated_at' => $now,
         ]);

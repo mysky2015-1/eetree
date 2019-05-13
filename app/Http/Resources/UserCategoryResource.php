@@ -17,6 +17,7 @@ class UserCategoryResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'parent_id' => $this->parent_id,
         ];
     }
 }

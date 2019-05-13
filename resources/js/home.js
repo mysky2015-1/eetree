@@ -10,6 +10,7 @@ require('./bootstrap');
 window.Vue = require('vue');
 
 Vue.component('xy-paginate', require('./components/Pagination').default)
+Vue.component('xy-folder', require('./components/Folder').default)
 
 import BootstrapVue from 'bootstrap-vue'
 import VueRouter from 'vue-router';

@@ -29,11 +29,12 @@ Route::middleware('auth')->group(function () {
     // doc draft
     Route::post('/draftDocs', 'DocDraftController@store')->name('docDraft.store');
     Route::put('/draftDocs/{docDraft}', 'DocDraftController@save')->name('docDraft.save');
-    Route::delete('/draftDocs/{doc}', 'DocDraftController@delete')->name('docDraft.delete');
+    Route::delete('/draftDocs/{docDraft}', 'DocDraftController@delete')->name('docDraft.delete');
     Route::get('/doc/edit/{docDraft}', 'DocDraftController@edit')->name('docDraft.edit');
     Route::get('/doc/share/{docDraft}', 'DocDraftController@share')->name('docDraft.share');
     // user category
-    Route::post('/folder', 'UserCategoryController@folder')->name('userCategory.folder');
+    Route::post('/folder/{category?}', 'UserCategoryController@folder')->name('userCategory.folder');
+    Route::get('/userCategories', 'UserCategoryController@index')->name('userCategory.index');
     Route::post('/categories', 'UserCategoryController@store')->name('userCategory.store');
     Route::put('/categories/{category}', 'UserCategoryController@update')->name('userCategory.update');
     Route::delete('/categories/{category}', 'UserCategoryController@delete')->name('userCategory.delete');

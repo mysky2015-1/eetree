@@ -9,6 +9,7 @@ use App\Http\Resources\DocDraftResource;
 use App\Http\Resources\UserCategoryResource;
 use App\Models\DocDraft;
 use App\Models\UserCategory;
+use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,10 +17,21 @@ class UserCategoryController extends Controller
 {
     use ApiResponse;
 
-    public function folder(Request $request)
+    public function index(Request $request)
     {
-        $parentId = (int) $request->input('id');
         $userId = Auth::id();
+
+        $categories = UserCategory::where([
+            ['user_id', $userId],
+        ])->orderBy('order', 'asc')->get();
+
+        return $this->success(UserCategoryResource::collection($categories));
+    }
+
+    public function folder(UserCategory $category = null, Request $request)
+    {
+        $userId = Auth::id();
+        $parentId = $category ? $category->id : 0;
 
         $categories = UserCategory::where([
             ['user_id', $userId],
@@ -32,6 +44,7 @@ class UserCategoryController extends Controller
         ])->get();
 
         return $this->success([
+            'category' => $category ? new UserCategoryResource($category) : [],
             'categories' => UserCategoryResource::collection($categories),
             'docs' => DocDraftResource::collection($docs),
         ]);
@@ -65,9 +78,7 @@ class UserCategoryController extends Controller
 
     public function update(UserCategory $category, UserCategoryRequest $request)
     {
-        if ($category->user_id !== Auth::id()) {
-            abort(403);
-        }
+        $this->_checkCategory($category);
         $data = $request->validated();
         $category->update($data);
         return $this->success();
@@ -75,6 +86,7 @@ class UserCategoryController extends Controller
 
     public function delete(UserCategory $category)
     {
+        $this->_checkCategory($category);
         $userId = Auth::id();
         $all = UserCategory::getTree($userId);
         $subTree = Tree::children($all, $category->id);
@@ -93,25 +105,39 @@ class UserCategoryController extends Controller
     public function move(UserCategory $category, Request $request)
     {
         $userId = Auth::id();
-        $destId = $request->input('dest');
-        $destCategory = UserCategory::find($destId);
-        if ($category->id === $destCategory->id ||
-            $category->user_id !== $userId ||
-            $destCategory->id !== $userId) {
+        $this->_checkCategory($category);
+        $destId = (int) $request->input('dest');
+        if ($category->id === $destId) {
             return $this->failed('参数有误');
         }
-        DB::transaction(function () use ($category, $destCategory) {
+        if ($destId !== 0) {
+            $destCategory = UserCategory::find($destId);
+            if ($category->id === $destCategory->id ||
+                $category->parent_id === $destCategory->id ||
+                $destCategory->user_id !== $userId) {
+                return $this->failed('参数有误');
+            }
+        }
+        DB::transaction(function () use ($category, $destId, $userId) {
             UserCategory::where('parent_id', $category->parent_id)
                 ->where('order', '>', $category->order)
                 ->decrement('order');
             // inner
             $order = UserCategory::where([
                 ['user_id', $userId],
-                ['parent_id', $destCategory->id],
+                ['parent_id', $destId],
             ])->count();
-            $category->update(['parent_id' => $destCategory->id, 'order' => $order]);
+            $category->update(['parent_id' => $destId, 'order' => $order]);
         });
 
         return $this->success();
+    }
+
+    private function _checkCategory($category)
+    {
+        $userId = Auth::id();
+        if ($category->user_id != $userId) {
+            abort(403);
+        }
     }
 }

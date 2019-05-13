@@ -12,31 +12,15 @@
             <div class="navbar-nav mr-auto">
                 <div class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            分类
-                            {{ $nav[0] }}
-                            <span class="caret"></span>
+                        分类
+                        <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
-                        <li ><a class="dropdown-item" href="javascript:;">一级菜单</a></li>
-                        <li><a class="dropdown-item" href="javascript:;">一级菜单</a></li>
-                        <li class="dropdown-divider"></li>
-                        <li class="dropdown-submenu">
-                            <a tabindex="-1" class="dropdown-item" href="javascript:;">一级菜单</a>
-                            <ul class="dropdown-menu">
-                                <li ><a class="dropdown-item" tabindex="-1" href="javascript:;">二级菜单</a></li>
-                                    <li class="dropdown-divider"></li>
-                                    <li class="dropdown-submenu">
-                                        <a class="dropdown-item"  href="javascript:;">二级菜单</a>
-                                        <ul class="dropdown-menu">
-                                            <li ><a class="dropdown-item"  href="javascript:;">三级菜单</a></li>
-                                        </ul>
-                                    </li>
-                            </ul>
-                        </li>
+                        @include('layouts/_nav', ['navs' => $navs])
                     </ul>
                 </div>
             </div>
-            
+
             <!-- Right Side Of Navbar -->
             <ul class="navbar-nav ml-auto">
                 <!-- Authentication Links -->

@@ -69,6 +69,17 @@ class DocDraftController extends Controller
         return $this->success();
     }
 
+    public function delete(DocDraft $docDraft)
+    {
+        $checked = $this->_checkDoc($docDraft);
+        if ($checked !== true) {
+            return $checked;
+        }
+        $docDraft->delete();
+
+        return $this->success();
+    }
+
     private function _checkDoc($docDraft)
     {
         $userId = Auth::id();
