@@ -28,4 +28,24 @@ class Category extends Model
             return \App\Helpers\Tree::make($all);
         });
     }
+
+    public static function getNavs()
+    {
+        $tree = static::getTree();
+        return static::formatNav($tree);
+    }
+
+    public static function formatNav($category)
+    {
+        return $category->map(function ($item) {
+            $tmp = [
+                'name' => $item->name,
+                'url' => route('category.list', ['category' => $item->id]),
+            ];
+            if ($item->has('children') && $item->children->isNotEmpty()) {
+                $tmp['children'] = static::formatNav($item->children);
+            }
+            return $tmp;
+        });
+    }
 }

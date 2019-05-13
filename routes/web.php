@@ -15,7 +15,8 @@ Auth::routes();
 
 Route::get('/', 'DocController@index');
 Route::get('/explore', 'DocController@index')->name('explore');
-Route::get('/category/{category}', 'CategoryController@index')->name('category');
+Route::get('/category/{category}', 'CategoryController@index')->name('category.list');
+Route::get('/doc/detail/{doc}', 'DocController@detail')->name('doc.detail');
 
 Route::middleware('guest')->group(function () {
     Route::get('password/reset-mobile', 'Auth\ForgotPasswordController@showMobileForm')->name('password.mobile');
@@ -40,8 +41,6 @@ Route::middleware('auth')->group(function () {
     Route::put('/categories/{category}', 'UserCategoryController@update')->name('userCategory.update');
     Route::delete('/categories/{category}', 'UserCategoryController@delete')->name('userCategory.delete');
     Route::put('/categories/{category}/move', 'UserCategoryController@move')->name('userCategory.move');
-    // doc
-    Route::get('/doc/detail/{doc}', 'DocController@detail')->name('doc.detail');
 
     // upload
     Route::post('/upload/docImage/{docDraft}', 'UploadController@docImage')->name('upload.docImage');

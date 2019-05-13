@@ -15,8 +15,7 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         View::composer('layouts.nav', function ($view) {
-            $navs = \App\Models\Category::getTree();
-            $view->with('navs', \App\Models\Category::getTree()->toArray());
+            $view->with('navs', \App\Models\Category::getTree());
         });
     }
 
