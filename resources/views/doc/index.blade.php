@@ -5,7 +5,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
-            <div class="content-list-main">
+            <div class="content-list-main card">
                 @if (empty($docs))
                     <h3 class="text-center">
                         <span class="explore-title">抱歉，未查询到相关文档</span>

@@ -5,8 +5,9 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
+        <div class="col-md-12">
+            <div class="card detail-card">
+                <h3 class="detail-title">{{$doc->title}}</h3>
                 <ul>
                     @include('doc._docrow', ['node' => $doc->content['root'], 'depth' => 1])
                 </ul>
