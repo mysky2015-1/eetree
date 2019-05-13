@@ -1,10 +1,8 @@
 <template>
   <div class="panel panel-default">
     <div class="panel-heading">我的文档</div>
-    <button type="button" class="btn btn-primary" @click="newCategory">
-      新建文件夹
-    </button>
-    <a class="btn btn-primary" href="/doc/new">新建文档</a>
+    <b-button @click="newCategory">新建文件夹</b-button>
+    <b-button @click="newDoc">新建文档</b-button>
     <ul class="list-group">
       <li class="list-group-item" v-for="row in categories" :key="row.id">
         <router-link :to="{path:'/doc/list/' + row.id}">
@@ -73,7 +71,7 @@ var modalFun = {
     $('#categoryModal').modal('hide');
   }
 };
-import { getDocList, newCategory, editCategory, delCategory, moveCategory, delDoc, } from '../../js/api';
+import { getDocList, newCategory, editCategory, delCategory, moveCategory, delDoc, newDoc } from '../../js/api';
 import { deepClone } from '../../js/utils';
 export default{
   data() {
@@ -87,14 +85,19 @@ export default{
     }
   },
   created() {
-    this.getDocList(this.$route.params.id || 0);  
+    this.getDocList();  
 	},
   methods: {
-    getDocList(id) {
-      getDocList(id).then((res) => {
+    getDocList() {
+      getDocList(this.parent_id).then((res) => {
 				const data = res.data
 				this.docs = data.data.docs;
 				this.categories = data.data.categories;
+			})
+    },
+    newDoc() {
+      newDoc().then((res) => {
+				location.href = res.data.data.url;
 			})
     },
     focusCategoryName(event) {
@@ -160,6 +163,7 @@ export default{
     },
     showMove(row) {
       this.category = deepClone(row)
+      allCategories()
     },
     moveCategory() {
       if (this.category.id === this.destCategory.id) {

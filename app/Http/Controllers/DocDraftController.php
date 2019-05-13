@@ -11,30 +11,29 @@ class DocDraftController extends Controller
 {
     use ApiResponse;
 
-    public function edit(DocDraft $docDraft = null)
+    public function edit(DocDraft $docDraft)
     {
-        if ($docDraft) {
-            $checked = $this->_checkDoc($docDraft);
-            if ($checked !== true) {
-                return $checked;
-            }
-        } else {
-            $userId = Auth::id();
-            $docDraft = DocDraft::where([
-                'user_id' => $userId,
-                'title' => '',
-            ])->first();
-            if (empty($docDraft)) {
-                $docDraft = new DocDraft;
-                $docDraft->user_id = $userId;
-                $docDraft->title = '';
-                $docDraft->content = '';
-                $docDraft->review_remarks = '';
-                $docDraft->save();
-            }
+        $checked = $this->_checkDoc($docDraft);
+        if ($checked !== true) {
+            return $checked;
         }
         return view('doc_draft/edit', [
             'docDraft' => $docDraft->toArray(),
+        ]);
+    }
+
+    public function store(Request $request)
+    {
+        $userId = Auth::id();
+        $docDraft = new DocDraft;
+        $docDraft->user_id = $userId;
+        $docDraft->title = '新建文档';
+        $docDraft->content = '';
+        $docDraft->review_remarks = '';
+        $docDraft->save();
+
+        return $this->success([
+            'url' => route('docDraft.edit', ['docDraft' => $docDraft->id]),
         ]);
     }
 

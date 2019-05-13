@@ -27,9 +27,10 @@ Route::middleware('auth')->group(function () {
     // home
     Route::get('/home', 'HomeController@index')->name('home');
     // doc draft
-    Route::get('/doc/new', 'DocDraftController@edit')->name('docDraft.new');
+    Route::post('/draftDocs', 'DocDraftController@store')->name('docDraft.store');
+    Route::put('/draftDocs/{docDraft}', 'DocDraftController@save')->name('docDraft.save');
+    Route::delete('/draftDocs/{doc}', 'DocDraftController@delete')->name('docDraft.delete');
     Route::get('/doc/edit/{docDraft}', 'DocDraftController@edit')->name('docDraft.edit');
-    Route::post('/doc/save/{docDraft}', 'DocDraftController@save')->name('docDraft.save');
     Route::get('/doc/share/{docDraft}', 'DocDraftController@share')->name('docDraft.share');
     // user category
     Route::post('/folder', 'UserCategoryController@folder')->name('userCategory.folder');
@@ -39,8 +40,6 @@ Route::middleware('auth')->group(function () {
     Route::put('/categories/{category}/move', 'UserCategoryController@move')->name('userCategory.move');
     // doc
     Route::get('/doc/detail/{doc}', 'DocController@detail')->name('doc.detail');
-    Route::get('/doc/search', 'DocController@search')->name('doc.search');
-    Route::delete('/docs/{doc}', 'DocDraftController@delete')->name('docDraft.delete');
 
     // upload
     Route::post('/upload/docImage/{docDraft}', 'UploadController@docImage')->name('upload.docImage');

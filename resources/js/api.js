@@ -11,10 +11,17 @@ export function getDocList(id) {
     })
 }
 
+export function newDoc() {
+    return axios({
+        method: 'post',
+        url: '/draftDocs',
+    })
+}
+
 export function delDoc(id) {
     return axios({
         method: 'delete',
-        url: '/docs/' + id,
+        url: '/draftDocs/' + id,
         data,
     })
 }

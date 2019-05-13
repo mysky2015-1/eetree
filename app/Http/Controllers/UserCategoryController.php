@@ -29,7 +29,6 @@ class UserCategoryController extends Controller
         $docs = DocDraft::where([
             ['user_id', $userId],
             ['user_category_id', $parentId],
-            ['title', '<>', ''],
         ])->get();
 
         return $this->success([
