@@ -58,6 +58,9 @@ class CategoryController extends Controller
         $destId = $request->input('dest');
         $destCategory = Category::find($destId);
         $type = $request->input('type');
+        if ($category->id === $destCategory->id) {
+            return $this->failed('参数有误');
+        }
         DB::transaction(function () use ($category, $destCategory, $type) {
             Category::where('parent_id', $category->parent_id)
                 ->where('order', '>', $category->order)
@@ -76,7 +79,8 @@ class CategoryController extends Controller
                     ->increment('order');
             } else {
                 // inner
-                $category->update(['parent_id' => $destCategory->id, 'order' => 0]);
+                $order = Category::where('parent_id', $destCategory->id)->count();
+                $category->update(['parent_id' => $destCategory->id, 'order' => $order]);
             }
         });
 

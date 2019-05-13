@@ -9,12 +9,16 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
-Vue.component('xy-paginate', require('./components/Pagination'))
+Vue.component('xy-paginate', require('./components/Pagination').default)
 
+import BootstrapVue from 'bootstrap-vue'
 import VueRouter from 'vue-router';
-Vue.use(VueRouter);
 // import store from './store/'; // vuex 数据存储所需对象
 import routes from './routes';    // 路由配置文件
+
+Vue.use(BootstrapVue)
+
+Vue.use(VueRouter);
 // 实例化路由
 const router = new VueRouter({
     routes

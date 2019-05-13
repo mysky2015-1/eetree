@@ -18,7 +18,6 @@ class UserCategoryRequest extends FormRequest
                 ];
             case 'PUT':
                 return [
-                    'parent_id' => ['required', 'numeric'],
                     'name' => ['required'],
                 ];
             case 'PATCH':

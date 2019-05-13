@@ -71,9 +71,13 @@ window.axios.interceptors.response.use(function (response) {
     return response;
 }, function (error) {
     if (error.response) {
-      if (error.response.data.code === 400 || error.response.data.code === 422) {
-        layer.msg(error.response.data.message, { icon: 5 });
-      }
+        if (error.response.data.code === 400 || error.response.data.code === 422) {
+            layer.msg(error.response.data.message, { icon: 5 });
+        } else {
+            layer.msg(error.message, { icon: 5 });
+        }
+    } else {
+        layer.msg(error.message, { icon: 5 });
     }
     return Promise.reject(error);
 });
