@@ -107,14 +107,12 @@ class UserCategoryController extends Controller
         $userId = Auth::id();
         $this->_checkCategory($category);
         $destId = (int) $request->input('dest');
-        if ($category->id === $destId) {
+        if ($category->id === $destId || $category->parent_id === $destId) {
             return $this->failed('参数有误');
         }
         if ($destId !== 0) {
             $destCategory = UserCategory::find($destId);
-            if ($category->id === $destCategory->id ||
-                $category->parent_id === $destCategory->id ||
-                $destCategory->user_id !== $userId) {
+            if ($destCategory->user_id !== $userId) {
                 return $this->failed('参数有误');
             }
         }

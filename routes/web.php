@@ -32,6 +32,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/draftDocs/{docDraft}', 'DocDraftController@delete')->name('docDraft.delete');
     Route::get('/doc/edit/{docDraft}', 'DocDraftController@edit')->name('docDraft.edit');
     Route::get('/doc/share/{docDraft}', 'DocDraftController@share')->name('docDraft.share');
+    Route::put('/draftDocs/{docDraft}/move', 'DocDraftController@move')->name('docDraft.move');
     // user category
     Route::post('/folder/{category?}', 'UserCategoryController@folder')->name('userCategory.folder');
     Route::get('/userCategories', 'UserCategoryController@index')->name('userCategory.index');

@@ -15,6 +15,15 @@ export function newDoc() {
     })
 }
 
+export function moveDoc(srcId, destId) {
+    const data = { dest: destId }
+    return axios({
+      url: '/draftDocs/' + srcId + '/move',
+      method: 'put',
+      data
+    })
+}
+
 export function delDoc(id) {
     return axios({
         method: 'delete',
@@ -59,4 +68,4 @@ export function moveCategory(srcId, destId) {
       method: 'put',
       data
     })
-  }
+}

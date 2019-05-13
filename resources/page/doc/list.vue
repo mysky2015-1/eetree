@@ -11,7 +11,7 @@
         <router-link :to="{path:'/doc/list/' + row.id}">
 					{{ row.name }}
         </router-link>
-        <b-button class="float-right" @click="showMove(row)">移动到</b-button>
+        <b-button class="float-right" @click="showMove(row, 'category')">移动到</b-button>
         <b-button class="float-right" @click="editCategory(row)">重命名</b-button>
         <b-button class="float-right" @click="delCategory(row)">删除</b-button>
       </li>
@@ -26,6 +26,7 @@
         <a v-if="row.doc_id !== 0" class="float-right" :href="'/doc/detail/' + row.doc_id">
           查看
         </a>
+        <b-button class="float-right" @click="showMove(row, 'doc')">移动到</b-button>
         <b-button class="float-right" @click="delDoc(row)">删除</b-button>
       </li>
     </ul>
@@ -48,7 +49,7 @@
         </div>
       </div>
     </div>
-    <b-modal ref="move-modal" title="移动到" @ok="moveCategory()">
+    <b-modal ref="move-modal" title="移动到" @ok="doMove()">
       <ul class="list-group">
         <xy-folder :list="moveCategories" @nodeClick="selectDestCategory"></xy-folder>
       </ul>
@@ -72,12 +73,12 @@ var modalFun = {
     $('#categoryModal').modal('hide');
   }
 };
-import { getDocList, delDoc, newDoc, getCategoryList, newCategory, editCategory, delCategory, moveCategory } from '../../js/api';
+import { getDocList, moveDoc, delDoc, newDoc, getCategoryList, newCategory, editCategory, delCategory, moveCategory } from '../../js/api';
 import { deepClone, unflatten } from '../../js/utils';
 export default{
   data() {
     return {
-      categoryId: this.$route.params.id || 0,
+      categoryId: parseInt(this.$route.params.id) || 0,
       parentId: 0,
       docs: [],
       moveCategories: [],
@@ -85,6 +86,8 @@ export default{
       dialogType: 'new',
       category: Object.assign({}, defaultCategory),
       destCategoryId: 0,
+      moveType: 'doc',
+      moveItem: {},
     }
   },
   created() {
@@ -188,15 +191,19 @@ export default{
         }
       })
     },
-    showMove(row) {
-      this.category = deepClone(row)
+    showMove(row, moveType) {
+      this.moveType = moveType
+      this.moveItem = deepClone(row)
       getCategoryList().then((res) => {
         res.data.data.forEach(element => {
           element.selected = false
         })
-        const moveCategories = res.data.data.filter((category) => {
-          return category.id !== this.category.id
-        }, this)
+        let moveCategories = res.data.data;
+        if (moveType === 'category') {
+          moveCategories = moveCategories.filter((category) => {
+            return category.id !== this.moveItem.id
+          }, this)
+        }
         this.moveCategories = [{
           id: 0,
           name: 'root',
@@ -219,23 +226,36 @@ export default{
         }
       });
     },
-    moveCategory() {
-      if (this.category.id === this.destCategoryId || this.category.parent_id === this.destCategoryId) {
-        return false;
+    doMove() {
+      if (this.moveType === 'doc') {
+        if (this.categoryId === this.destCategoryId) {
+          return false;
+        }
+        moveDoc(this.moveItem.id, this.destCategoryId).then(() => {
+          this.$bvToast.toast('操作成功', {
+            title: 'Success',
+            variant: 'success',
+          })
+          this.$router.push({path:this.destCategoryId === 0 ? '/doc/list/' : '/doc/list/' + this.destCategoryId})
+        });
+      } else {
+        if (this.moveItem.id === this.destCategoryId || this.moveItem.parent_id === this.destCategoryId) {
+          return false;
+        }
+        moveCategory(this.moveItem.id, this.destCategoryId).then(() => {
+          this.$bvToast.toast('操作成功', {
+            title: 'Success',
+            variant: 'success',
+          })
+          // for (let index = 0; index < this.categories.length; index++) {
+          //   if (this.categories[index].id === row.id) {
+          //     this.categories.splice(index, 1)
+          //     break
+          //   }
+          // }
+          this.$router.push({path:this.destCategoryId === 0 ? '/doc/list/' : '/doc/list/' + this.destCategoryId})
+        });
       }
-      moveCategory(this.category.id, this.destCategoryId).then(() => {
-        this.$bvToast.toast('操作成功', {
-          title: 'Success',
-          variant: 'success',
-        })
-        // for (let index = 0; index < this.categories.length; index++) {
-        //   if (this.categories[index].id === row.id) {
-        //     this.categories.splice(index, 1)
-        //     break
-        //   }
-        // }
-        this.$router.push({path:this.destCategoryId === 0 ? '/doc/list/' : '/doc/list/' + this.destCategoryId})
-      });
     }
 	},
 	watch: {

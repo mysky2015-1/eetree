@@ -58,6 +58,29 @@ class DocDraftController extends Controller
         ]);
     }
 
+    public function move(DocDraft $docDraft, Request $request)
+    {
+        $userId = Auth::id();
+        $checked = $this->_checkDoc($docDraft);
+        if ($checked !== true) {
+            return $checked;
+        }
+        $destId = (int) $request->input('dest');
+        if ($docDraft->user_category_id === $destId) {
+            return $this->failed('参数有误');
+        }
+        if ($destId !== 0) {
+            $destCategory = UserCategory::find($destId);
+            if ($destCategory->user_id !== $userId) {
+                return $this->failed('参数有误');
+            }
+        }
+        $docDraft->user_category_id = $destId;
+        $docDraft->save();
+
+        return $this->success();
+    }
+
     public function share(DocDraft $docDraft)
     {
         $checked = $this->_checkDoc($docDraft);
