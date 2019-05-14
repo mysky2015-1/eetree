@@ -8,10 +8,11 @@ export function getDocList(id) {
     })
 }
 
-export function newDoc() {
+export function newDoc(data) {
     return axios({
         method: 'post',
         url: '/draftDocs',
+        data
     })
 }
 

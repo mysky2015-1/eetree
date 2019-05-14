@@ -2,25 +2,25 @@
 
 namespace App\Http\Requests\Api;
 
-use App\Models\DocDraft;
+use App\Models\DocPublish;
 
-class DocDraftRequest extends FormRequest
+class DocPublishRequest extends FormRequest
 {
     public function rules()
     {
         switch ($this->method()) {
             case 'GET':
                 return [
-                    'status' => ['required', 'in:' . implode(',', [DocDraft::STATUS_SUBMIT, DocDraft::STATUS_REFUSE])],
+                    'status' => ['required', 'in:' . implode(',', [DocPublish::STATUS_SUBMIT, DocPublish::STATUS_REFUSE])],
                 ];
             case 'PUT':
                 $rules = [
-                    'status' => ['required', 'in:' . implode(',', [DocDraft::STATUS_REFUSE, DocDraft::STATUS_PASS])],
+                    'status' => ['required', 'in:' . implode(',', [DocPublish::STATUS_REFUSE, DocPublish::STATUS_PASS])],
                 ];
-                if ($this->status == DocDraft::STATUS_PASS) {
+                if ($this->status == DocPublish::STATUS_PASS) {
                     $rules['category_id'] = ['required'];
                 }
-                if ($this->status == DocDraft::STATUS_REFUSE) {
+                if ($this->status == DocPublish::STATUS_REFUSE) {
                     $rules['review_remarks'] = ['required'];
                 }
                 return $rules;

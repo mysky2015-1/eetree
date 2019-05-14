@@ -21,11 +21,11 @@ require('./bootstrap');
         });
 
         function valid() {
-            // var requestData = getRequestData();
-            // if (!/^1[0-9]{10}$/.test(requestData.mobile)) {
-            //     layer.msg('手机号格式错误', {icon: 2});
-            //     return false;
-            // }
+            var requestData = getRequestData();
+            if (!/^1[0-9]{10}$/.test(requestData.mobile)) {
+                layer.msg('手机号格式错误', {icon: 2});
+                return false;
+            }
             return true;
         }
 

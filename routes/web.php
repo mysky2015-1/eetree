@@ -17,6 +17,7 @@ Route::get('/', 'DocController@index');
 Route::get('/explore', 'DocController@index')->name('explore');
 Route::get('/category/{category}', 'CategoryController@index')->name('category.list');
 Route::get('/doc/detail/{doc}', 'DocController@detail')->name('doc.detail');
+Route::get('/docPublish/preview/{docPublish}', 'DocController@publishPreview')->name('doc.publishPreview');
 
 Route::middleware('guest')->group(function () {
     Route::get('password/reset-mobile', 'Auth\ForgotPasswordController@showMobileForm')->name('password.mobile');
@@ -32,6 +33,8 @@ Route::middleware('auth')->group(function () {
     Route::put('/draftDocs/{docDraft}', 'DocDraftController@save')->name('docDraft.save');
     Route::delete('/draftDocs/{docDraft}', 'DocDraftController@delete')->name('docDraft.delete');
     Route::get('/doc/edit/{docDraft}', 'DocDraftController@edit')->name('docDraft.edit');
+    Route::post('/doc/share/{docDraft}', 'DocDraftController@setShare')->name('docDraft.setShare');
+    Route::post('/doc/publish/{docDraft}', 'DocDraftController@publish')->name('docDraft.publish');
     Route::get('/doc/share/{docDraft}', 'DocDraftController@share')->name('docDraft.share');
     Route::put('/draftDocs/{docDraft}/move', 'DocDraftController@move')->name('docDraft.move');
     // user category

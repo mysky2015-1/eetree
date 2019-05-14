@@ -59,8 +59,9 @@ Route::namespace ('Api')->middleware('cors')->group(function () {
 
             Route::get('/docs', 'DocController@index')->name('doc.index');
             Route::put('/docs/{doc}', 'DocController@update')->name('doc.update');
-            Route::get('/docDrafts', 'DocDraftController@index')->name('docDraft.index');
-            Route::put('/docDrafts/{docDraft}/review', 'DocDraftController@review')->name('docDraft.review');
+            Route::get('/docPublishs', 'DocPublishController@index')->name('docPublish.index');
+            Route::put('/docPublishs/{docPublish}/review', 'DocPublishController@review')->name('docPublish.review');
+            Route::get('/docPublishs/{docPublish}/previewKey', 'DocPublishController@previewKey')->name('docPublish.previewKey');
         });
     });
 });

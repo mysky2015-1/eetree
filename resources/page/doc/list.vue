@@ -132,7 +132,7 @@ export default {
       })
     },
     newDoc() {
-      newDoc().then(res => {
+      newDoc({user_category_id: this.categoryId}).then(res => {
         location.href = res.data.data.url
       })
     },

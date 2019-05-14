@@ -26,18 +26,35 @@ class CreateEetreeTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->default(0);
             $table->integer('doc_id')->default(0);
+            $table->integer('publish_id')->default(0);
+            $table->string('share_id', 32)->default('');
             $table->integer('user_category_id')->default(0);
             $table->string('title', 255);
             $table->text('content');
-            $table->tinyInteger('status')->default(0)->comment('0:草稿,1:提交审核,8:审核不通过,9:审核通过');
+            $table->timestamp('last_edit')->nullable();
+
+            $table->timestamps();
+            $table->softDeletes();
+
+            $table->index('user_id');
+            $table->index('doc_id');
+            $table->index('publish_id');
+        });
+        Schema::create('doc_publish', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('user_id')->default(0);
+            $table->integer('doc_id')->default(0);
+            $table->string('title', 255);
+            $table->text('content');
+            $table->tinyInteger('status')->default(0)->comment('1:提交审核,8:审核不通过,9:审核通过');
             $table->text('review_remarks')->comment('审核不通过的原因');
             $table->timestamp('submit_at')->nullable();
 
             $table->timestamps();
             $table->softDeletes();
 
-            $table->index('doc_id');
             $table->index('user_id');
+            $table->index('doc_id');
         });
         Schema::create('doc', function (Blueprint $table) {
             $table->increments('id');

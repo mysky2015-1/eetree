@@ -54,10 +54,12 @@
 </head>
 <body ng-app="editDocApp" ng-controller="MainController">
 <div class="editor-title">
+    <a class="" href="/home#/doc/list/{{ $docDraft['user_category_id'] ? $docDraft['user_category_id'] : '' }}">返回上级</a>
     <h1 class="doc-name">
         {{ $docDraft['title'] }}
     </h1>
     <span class="doc-share">分享</span>
+    <span class="doc-publish">公开</span>
 </div>
 <kityminder-editor on-init="initEditor(editor, minder)"></kityminder-editor>
 </body>
@@ -92,14 +94,34 @@
 
     $('.doc-share').click(function(){
         axios({
-            method: 'get',
-            url: '{{ route('docDraft.share', ['docDraft' => $docDraft['id']]) }}',
+            method: 'post',
+            url: '{{ route('docDraft.setShare', ['docDraft' => $docDraft['id']]) }}',
         }).then(function (res) {
-            layer.msg('分享成功，待管理员审核', {icon: 1}, function() {
-                location.href = '{{ route('home') }}#/doc/list/{{ $docDraft['user_category_id'] ?: '' }}'
+            layer.open({
+                type: 1,
+                title: '分享成功',
+                content: '<div>\
+                    分享链接: {{ route('docDraft.share', ['docDraft' => $docDraft['id']]) }}\
+                </div>'
             });
         });
     });
+
+    $('.doc-publish').click(function(){
+        layer.confirm('公开需要管理员审核，期间不能修改文档', {
+            btn: ['公开', '取消'] //按钮
+        }, function(){
+            axios({
+                method: 'post',
+                url: '{{ route('docDraft.publish', ['docDraft' => $docDraft['id']]) }}',
+            }).then(function (res) {
+                layer.msg('公开成功，待管理员审核', {icon: 1}, function() {
+                    // location.href = '{{ route('home') }}#/doc/list/{{ $docDraft['user_category_id'] ?: '' }}'
+                });
+            });
+        });
+    });
+
 	angular.module('editDocApp', ['kityminderEditor'])
         .config(function (configProvider) {
             configProvider.set('imageUpload', '{{ route('upload.docImage', ['docDraft' => $docDraft['id']]) }}');

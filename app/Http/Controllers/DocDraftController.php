@@ -13,12 +13,19 @@ class DocDraftController extends Controller
 
     public function edit(DocDraft $docDraft)
     {
-        $checked = $this->_checkDoc($docDraft);
-        if ($checked !== true) {
-            return $checked;
-        }
+        $this->_checkDoc($docDraft);
         return view('doc_draft/edit', [
             'docDraft' => $docDraft->toArray(),
+        ]);
+    }
+
+    public function share(DocDraft $docDraft)
+    {
+        if ($docDraft->share_id === '') {
+            abort(404);
+        }
+        return view('doc/detail', [
+            'doc' => $docDraft,
         ]);
     }
 
@@ -29,7 +36,7 @@ class DocDraftController extends Controller
         $docDraft->user_id = $userId;
         $docDraft->title = '新建文档';
         $docDraft->content = '';
-        $docDraft->review_remarks = '';
+        $docDraft->user_category_id = (int) $request->input('user_category_id');
         $docDraft->save();
 
         return $this->success([
@@ -45,10 +52,7 @@ class DocDraftController extends Controller
             return $this->failed('error');
         }
         $title = $content['root']['data']['text'];
-        $checked = $this->_checkDoc($docDraft);
-        if ($checked !== true) {
-            return $checked;
-        }
+        $this->_checkDoc($docDraft);
         $docDraft->title = $title;
         $docDraft->content = $content;
         $docDraft->save();
@@ -61,10 +65,7 @@ class DocDraftController extends Controller
     public function move(DocDraft $docDraft, Request $request)
     {
         $userId = Auth::id();
-        $checked = $this->_checkDoc($docDraft);
-        if ($checked !== true) {
-            return $checked;
-        }
+        $this->_checkDoc($docDraft);
         $destId = (int) $request->input('dest');
         if ($docDraft->user_category_id === $destId) {
             return $this->failed('参数有误');
@@ -81,23 +82,25 @@ class DocDraftController extends Controller
         return $this->success();
     }
 
-    public function share(DocDraft $docDraft)
+    public function setShare(DocDraft $docDraft)
     {
-        $checked = $this->_checkDoc($docDraft);
-        if ($checked !== true) {
-            return $checked;
-        }
-        $docDraft->submitShare();
+        $this->_checkDoc($docDraft);
+        $docDraft->setShare();
+
+        return $this->success();
+    }
+
+    public function publish(DocDraft $docDraft)
+    {
+        $this->_checkDoc($docDraft);
+        $docDraft->setPublish();
 
         return $this->success();
     }
 
     public function delete(DocDraft $docDraft)
     {
-        $checked = $this->_checkDoc($docDraft);
-        if ($checked !== true) {
-            return $checked;
-        }
+        $this->_checkDoc($docDraft);
         $docDraft->delete();
 
         return $this->success();
@@ -107,11 +110,7 @@ class DocDraftController extends Controller
     {
         $userId = Auth::id();
         if ($docDraft->user_id != $userId) {
-            return $this->failed('无权限');
+            abort(403);
         }
-        if ($docDraft->status == DocDraft::STATUS_SUBMIT) {
-            return $this->failed('审核中，不能修改');
-        }
-        return true;
     }
 }
