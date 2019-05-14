@@ -18,6 +18,7 @@ Route::get('/explore', 'DocController@index')->name('explore');
 Route::get('/category/{category}', 'CategoryController@index')->name('category.list');
 Route::get('/doc/detail/{doc}', 'DocController@detail')->name('doc.detail');
 Route::get('/docPublish/preview/{docPublish}', 'DocController@publishPreview')->name('doc.publishPreview');
+Route::get('/comments/{doc}', 'CommentController@index')->name('comment.index');
 
 Route::middleware('guest')->group(function () {
     Route::get('password/reset-mobile', 'Auth\ForgotPasswordController@showMobileForm')->name('password.mobile');
@@ -47,4 +48,7 @@ Route::middleware('auth')->group(function () {
 
     // upload
     Route::post('/upload/docImage/{docDraft}', 'UploadController@docImage')->name('upload.docImage');
+
+    //comment
+    Route::post('/comments/{doc}', 'CommentController@store')->name('comment.store');
 });

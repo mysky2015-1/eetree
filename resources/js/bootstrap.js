@@ -10,7 +10,7 @@ window._ = require('lodash');
 try {
     window.Popper = require('popper.js').default;
     window.$ = window.jQuery = require('jquery');
-    window.layer = require("layui-layer");
+    window.toastr = require('toastr')
 
     require('bootstrap');
 } catch (e) {}
@@ -72,12 +72,12 @@ window.axios.interceptors.response.use(function (response) {
 }, function (error) {
     if (error.response) {
         if (error.response.data.code === 400 || error.response.data.code === 422) {
-            layer.msg(error.response.data.message, { icon: 5 });
+            toastr.error(error.response.data.message);
         } else {
-            layer.msg(error.message, { icon: 5 });
+            toastr.error(error.message);
         }
     } else {
-        layer.msg(error.message, { icon: 5 });
+        toastr.error(error.message);
     }
     return Promise.reject(error);
 });

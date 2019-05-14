@@ -48,20 +48,20 @@ Route::namespace ('Api')->middleware('cors')->group(function () {
             Route::put('/admin_roles/{role}', 'AdminRoleController@update')->name('adminrole.update');
             Route::delete('/admin_roles/{role}', 'AdminRoleController@delete')->name('adminrole.delete');
 
-            Route::get('/categories', 'CategoryController@index')->name('category.index');
-            Route::post('/categories', 'CategoryController@store')->name('category.store');
-            Route::put('/categories/{category}', 'CategoryController@update')->name('category.update');
-            Route::delete('/categories/{category}', 'CategoryController@delete')->name('category.delete');
-            Route::put('/categories/{category}/move', 'CategoryController@move')->name('category.move');
+            Route::get('/categories', 'CategoryController@index')->name('admin.category.index');
+            Route::post('/categories', 'CategoryController@store')->name('admin.category.store');
+            Route::put('/categories/{category}', 'CategoryController@update')->name('admin.category.update');
+            Route::delete('/categories/{category}', 'CategoryController@delete')->name('admin.category.delete');
+            Route::put('/categories/{category}/move', 'CategoryController@move')->name('admin.category.move');
 
-            Route::get('/comments', 'CommentController@index')->name('comment.index');
-            Route::put('/comments/{comment}/toggle', 'CommentController@toggle')->name('comment.toggle');
+            Route::get('/comments', 'CommentController@index')->name('admin.comment.index');
+            Route::put('/comments/{comment}/toggle', 'CommentController@toggle')->name('admin.comment.toggle');
 
-            Route::get('/docs', 'DocController@index')->name('doc.index');
-            Route::put('/docs/{doc}', 'DocController@update')->name('doc.update');
-            Route::get('/docPublishs', 'DocPublishController@index')->name('docPublish.index');
-            Route::put('/docPublishs/{docPublish}/review', 'DocPublishController@review')->name('docPublish.review');
-            Route::get('/docPublishs/{docPublish}/previewKey', 'DocPublishController@previewKey')->name('docPublish.previewKey');
+            Route::get('/docs', 'DocController@index')->name('admin.doc.index');
+            Route::put('/docs/{doc}', 'DocController@update')->name('admin.doc.update');
+            Route::get('/docPublishs', 'DocPublishController@index')->name('admin.docPublish.index');
+            Route::put('/docPublishs/{docPublish}/review', 'DocPublishController@review')->name('admin.docPublish.review');
+            Route::get('/docPublishs/{docPublish}/previewKey', 'DocPublishController@previewKey')->name('admin.docPublish.previewKey');
         });
     });
 });
