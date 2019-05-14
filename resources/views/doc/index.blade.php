@@ -23,11 +23,13 @@
                                     <ul>
                                         <li>
                                             <div class="portrait">
-                                                <p class="name">用户：{{ $doc->user->nickname }}</p>
+                                                <!-- <i class="fa fa-user-circle" aria-hidden="true"></i> -->
+                                                <img src="https://mubu.com/photo/f925e3ac-c912-4deb-8f02-8203116c846a.jpg@100w_100h">
+                                                <p class="name">  {{ $doc->user->nickname }}</p>
                                             </div>
                                         </li>
-                                        <li><i class="icon icon-time"></i><span>更新时间：{{ $doc->publish_at->format('Y-m-d') }}</span></li>
-                                        <li><i class="icon icon-view"></i><span>阅读量:{{ $doc->view_count }}</span></li>
+                                        <li><i class="fa fa-clock-o fa-small" aria-hidden="true"></i><span>{{ $doc->publish_at->format('Y-m-d') }}</span></li>
+                                        <li><i class="fa fa-eye fa-small" aria-hidden="true"></i><span>{{ $doc->view_count }}</span></li>
                                     </ul>
                                 </div>
                             </div>

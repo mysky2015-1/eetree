@@ -1,19 +1,29 @@
 <template>
   <div class="row">
-    <div class="col-md-1">
-      <div class="panel-heading">我的文档</div>
-      <div class="panel-heading">我的分享</div>
+    <div class="col-md-12 top-bar">
       <router-link
         v-if="categoryId !== 0"
         tag="b-button"
         :to="{path: parentId === 0 ? '/doc/list/' : '/doc/list/' + parentId}"
       >&lt;&lt; 上一级</router-link>
-      <b-button @click="newCategory">新建文件夹</b-button>
-      <b-button @click="newDoc">新建文档</b-button>
+      <b-button @click="newCategory">
+        <i class="fa fa-folder-open-o" aria-hidden="true"></i>新建文件夹
+      </b-button>
+      <b-button @click="newDoc">
+        <i class="fa fa-file-code-o" aria-hidden="true"></i>新建文档
+      </b-button>
     </div>
-    <div class="col-md-11">
+    <div class="col-md-2 panel-left">
+      <div class="panel-heading panel-heading-current">
+        <i class="fa fa-home" aria-hidden="true"></i>我的文档
+      </div>
+      <div class="panel-heading">
+        <i class="fa fa-share-alt" aria-hidden="true"></i>我的分享
+      </div>
+    </div>
+    <div class="col-md-10 clearpadding">
       <div class="panel panel-default">
-        <ul class="list-group">
+        <ul class="list-group clearpadding">
           <li class="list-group-item" v-for="row in categories" :key="'c' + row.id">
             <router-link :to="{path:'/doc/list/' + row.id}">{{ row.name }}</router-link>
             <b-button class="float-right" @click="showMove(row, 'category')">移动到</b-button>
@@ -23,8 +33,12 @@
           <li class="list-group-item" v-for="row in docs" :key="'d' + row.id">
             <a v-if="row.status != 1" :href="'/doc/edit/' + row.id">{{ row.title }}</a>
             <span v-if="row.status == 1">{{ row.title }}</span>
-            <span class="float-right">{{ row.created_at }}</span>
-            <a v-if="row.doc_id !== 0" class="float-right" :href="'/doc/detail/' + row.doc_id">查看</a>
+            <span class="created-time">{{ row.created_at }}</span>
+            <a
+              class="btn float-right btn-secondary"
+              v-if="row.doc_id !== 0"
+              :href="'/doc/detail/' + row.doc_id"
+            >查看</a>
             <b-button class="float-right" @click="showMove(row, 'doc')">移动到</b-button>
             <b-button class="float-right" @click="delDoc(row)">删除</b-button>
           </li>
@@ -132,7 +146,7 @@ export default {
       })
     },
     newDoc() {
-      newDoc({user_category_id: this.categoryId}).then(res => {
+      newDoc({ user_category_id: this.categoryId }).then(res => {
         location.href = res.data.data.url
       })
     },
