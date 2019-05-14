@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Requests\Api\DocPublishRequest;
 use App\Http\Resources\Api\DocPublishResource;
 use App\Models\Doc;
+use App\Models\DocDraft;
 use App\Models\DocPublish;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;

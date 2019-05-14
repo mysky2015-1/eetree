@@ -141,8 +141,8 @@ require('./bootstrap');
             return {
                 on: function(callback) {
                     if (callback && callback instanceof Function) {
-                        alr.find('.ok').click(function() {
-                            callback(true)
+                        alr.find('.ok').click(function(e) {
+                            callback(e)
                         });
                         alr.find('.cancel').click(function() {
                             return;
@@ -181,7 +181,10 @@ require('./bootstrap');
         return {
             tip: _tip,
             alert: _alert,
-            confirm: _confirm
+            confirm: _confirm,
+            close: function() {
+                alr.modal('hide')
+            }
         }
     
     } ();

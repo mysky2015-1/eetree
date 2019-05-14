@@ -61,7 +61,7 @@
         {{ $docDraft['title'] }}
     </h1>
     <span class="doc-share">分享</span>
-    <span class="doc-publish">公开</span>
+    <span class="doc-publish">提交文档</span>
 </div>
 <kityminder-editor on-init="initEditor(editor, minder)"></kityminder-editor>
 </body>
@@ -110,13 +110,45 @@
     $('.doc-publish').click(function(){
         Modal.confirm({
             title: '确认',
-            msg: '公开需要管理员审核，期间不能修改文档',
+            msg: '<div class="text-muted" style="margin-bottom: 10px;">提交需要管理员审核，审核通过后即会公开文档</div>\
+            <div class="form-group row">\
+                <label for="docTitle" class="col-sm-2 col-form-label">标题</label>\
+                <div class="col-sm-10">\
+                    <input type="text" class="form-control" id="docTitle" name="docTitle" value="' + $('.doc-name').text().trim() + '" />\
+                </div>\
+            </div>\
+            <div class="form-group row">\
+                <label for="docDescription" class="col-sm-2 col-form-label">描述</label>\
+                <div class="col-sm-10">\
+                    <textarea class="form-control" id="docDescription" name="docDescription" rows="3"></textarea>\
+                </div>\
+            </div>',
         }).on(function (e) {
+            e.stopPropagation();
+            var docTitle = $('#docTitle').val().trim();
+            var docDescription = $('#docDescription').val().trim();
+            var hasError = false;
+            if (docTitle == '') {
+                $('#docTitle').parent('div').addClass('has-error');
+                hasError = true;
+            }
+            if (docDescription == '') {
+                $('#docDescription').parent('div').addClass('has-error');
+                hasError = true;
+            }
+            if (hasError) {
+                return false;
+            }
             axios({
                 method: 'post',
                 url: '{{ route('docDraft.publish', ['docDraft' => $docDraft['id']]) }}',
+                data: {
+                    title: docTitle,
+                    description: docDescription,
+                }
             }).then(function (res) {
-                toastr.success('公开成功，待管理员审核');
+                toastr.success('提交成功，待管理员审核');
+                Modal.close();
             });
         });
     });

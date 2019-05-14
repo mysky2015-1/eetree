@@ -15,7 +15,7 @@ class Doc extends Model
     ];
 
     protected $fillable = [
-        'category_id', 'title', 'content',
+        'category_id', 'title', 'description', 'content',
     ];
 
     public function comments()

@@ -6,8 +6,8 @@
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
-@import '~bootstrap-vue/src/index.scss';
-@import "~toastr/toastr.scss";
+@import 'node_modules/bootstrap-vue/src/index.scss';
+@import "node_modules/toastr/toastr.scss";
 
 .navbar-laravel {
     background-color: #fff;

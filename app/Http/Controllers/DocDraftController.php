@@ -90,10 +90,14 @@ class DocDraftController extends Controller
         return $this->success();
     }
 
-    public function publish(DocDraft $docDraft)
+    public function publish(DocDraft $docDraft, Request $request)
     {
+        $validatedData = $request->validate([
+            'title' => 'required|max:255',
+            'description' => 'required',
+        ]);
         $this->_checkDoc($docDraft);
-        $docDraft->setPublish();
+        $docDraft->setPublish($validatedData);
 
         return $this->success();
     }

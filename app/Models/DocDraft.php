@@ -44,7 +44,7 @@ class DocDraft extends Model
         ]);
     }
 
-    public function setPublish()
+    public function setPublish($data)
     {
         if ($this->publish_id === 0) {
             $docPublish = new DocPublish;
@@ -54,7 +54,8 @@ class DocDraft extends Model
             $docPublish = DocPublish::find($this->publish_id);
         }
         $docPublish->status = DocPublish::STATUS_SUBMIT;
-        $docPublish->title = $this->title;
+        $docPublish->title = $data['title'];
+        $docPublish->description = $data['description'];
         $docPublish->content = $this->content;
         $docPublish->submit_at = Carbon::now();
         $docPublish->save();

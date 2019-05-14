@@ -1,4 +1,8 @@
 <li>
+@php
+var_dump($node);
+@endphp
+
     {{ $depth++ }}.
     {{ $node['data']['text'] }}
     @if (!empty($node['data']['image']))

@@ -45,6 +45,7 @@ class CreateEetreeTable extends Migration
             $table->integer('user_id')->default(0);
             $table->integer('doc_id')->default(0);
             $table->string('title', 255);
+            $table->string('description', 255);
             $table->text('content');
             $table->tinyInteger('status')->default(0)->comment('1:提交审核,8:审核不通过,9:审核通过');
             $table->text('review_remarks')->comment('审核不通过的原因');
@@ -61,6 +62,7 @@ class CreateEetreeTable extends Migration
             $table->integer('user_id')->default(0);
             $table->integer('category_id')->default(0);
             $table->string('title', 255);
+            $table->string('description', 255);
             $table->text('content');
             $table->timestamp('publish_at')->nullable();
             $table->integer('view_count')->default(0);
