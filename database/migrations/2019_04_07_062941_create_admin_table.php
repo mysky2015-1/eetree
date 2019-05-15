@@ -17,7 +17,7 @@ class CreateAdminTable extends Migration
             $table->increments('id');
             $table->string('name', 190)->unique();
             $table->string('password', 60);
-            $table->text('last_token')->nullable()->comment('登陆时的token');
+            $table->text('last_token')->nullable()->comment('登录时的token');
             $table->string('avatar')->nullable();
             $table->rememberToken();
             $table->timestamps();

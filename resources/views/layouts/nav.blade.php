@@ -31,7 +31,7 @@
                 <!-- Authentication Links -->
                 @guest
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('login') }}">登陆</a>
+                        <a class="nav-link" href="{{ route('login') }}">登录</a>
                     </li>
                     @if (Route::has('register'))
                         <li class="nav-item">
@@ -42,7 +42,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('home') }}">我的文档</a>
                     </li>
-                    <li class="nav-item dropdown">
+                    <li class="nav-item dropdown">do
                         <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                             {{ Auth::user()->name }} <span class="caret"></span>
                         </a>

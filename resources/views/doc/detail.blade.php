@@ -26,7 +26,7 @@
                             填写有误
                         </div>
                         <hr class="mb-4">
-                        <button class="btn btn-primary btn-block" type="submit">提交</button>   
+                        <button class="btn btn-primary btn-block" type="submit">提交</button>
                     </form>
                 </div>
             </div>
@@ -58,4 +58,16 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('scripts')
+<script>
+xyComment({
+    url: '{{ route('comment.store', ['doc' => $doc->id]) }}',
+    btn: '#commentBtn',
+    input: '#commentContent',
+    callback: function(res) {
+    }
+});
+</script>
 @endsection

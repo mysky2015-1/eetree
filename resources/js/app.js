@@ -6,6 +6,7 @@
  */
 
 require('./bootstrap');
+require('./comment');
 
 (function($){
     $.fn.sms = function(options) {

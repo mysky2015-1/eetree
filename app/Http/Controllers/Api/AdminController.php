@@ -77,7 +77,7 @@ class AdminController extends Controller
         $present_guard = Auth::getDefaultDriver();
         $token = Auth::claims(['guard' => $present_guard])->attempt(['name' => $request->name, 'password' => $request->password]);
         if ($token) {
-            //如果登陆，先检查原先是否有存token，有的话先失效，然后再存入最新的token
+            //如果登录，先检查原先是否有存token，有的话先失效，然后再存入最新的token
             $user = Auth::user();
             if ($user->last_token) {
                 try {
