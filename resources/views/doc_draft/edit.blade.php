@@ -9,18 +9,9 @@
 
 	<link href="favicon.ico" type="image/x-icon" rel="shortcut icon">
 
-	<!-- bower:css -->
-    <link href="{{ asset('css/toastr.min.css') }}" rel="stylesheet">
-	<link rel="stylesheet" href="{{ asset('bower_components/bootstrap/dist/css/bootstrap.min.css') }}" />
-	<link rel="stylesheet" href="{{ asset('bower_components/codemirror/lib/codemirror.css') }}" />
-	<link rel="stylesheet" href="{{ asset('bower_components/hotbox/hotbox.css') }}" />
-	<link rel="stylesheet" href="{{ asset('bower_components/kityminder-core/dist/kityminder.core.css') }}" />
-	<link rel="stylesheet" href="{{ asset('bower_components/color-picker/dist/color-picker.min.css') }}" />
-	<!-- endbower -->
+	<link rel="stylesheet" href="{{ asset('vendor/kityminder/kityminder.css') }}" />
 
-	<link rel="stylesheet" href="{{ asset('bower_components/kityminder-editor/dist/kityminder.editor.min.css') }}">
-
-	<style>
+    <style>
 		html, body {
 			margin: 0;
 			padding: 0;
@@ -66,30 +57,8 @@
 <kityminder-editor on-init="initEditor(editor, minder)"></kityminder-editor>
 </body>
 
-<!-- bower:js -->
-<script src="{{ asset('bower_components/jquery/dist/jquery.min.js') }}"></script>
-<script src="{{ asset('bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
-<script src="{{ asset('bower_components/angular/angular.min.js') }}"></script>
-<script src="{{ asset('bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js') }}"></script>
-<script src="{{ asset('bower_components/codemirror/lib/codemirror.js') }}"></script>
-<script src="{{ asset('bower_components/codemirror/mode/xml/xml.js') }}"></script>
-<script src="{{ asset('bower_components/codemirror/mode/javascript/javascript.js') }}"></script>
-<script src="{{ asset('bower_components/codemirror/mode/css/css.js') }}"></script>
-<script src="{{ asset('bower_components/codemirror/mode/htmlmixed/htmlmixed.js') }}"></script>
-<script src="{{ asset('bower_components/codemirror/mode/markdown/markdown.js') }}"></script>
-<script src="{{ asset('bower_components/codemirror/addon/mode/overlay.js') }}"></script>
-<script src="{{ asset('bower_components/codemirror/mode/gfm/gfm.js') }}"></script>
-<script src="{{ asset('bower_components/angular-ui-codemirror/ui-codemirror.min.js') }}"></script>
-<script src="{{ asset('bower_components/marked/lib/marked.js') }}"></script>
-<script src="{{ asset('bower_components/kity/dist/kity.min.js') }}"></script>
-<script src="{{ asset('bower_components/hotbox/hotbox.min.js') }}"></script>
-<script src="{{ asset('bower_components/json-diff/json-diff.js') }}"></script>
-<script src="{{ asset('bower_components/kityminder-core/dist/kityminder.core.min.js') }}"></script>
-<script src="{{ asset('bower_components/color-picker/dist/color-picker.min.js') }}"></script>
-<!-- endbower -->
-
-<script src="{{ asset('bower_components/kityminder-editor/dist/kityminder.editor.min.js') }}"></script>
 <script src="{{ asset('js/app.js') }}"></script>
+<script src="{{ asset('vendor/kityminder/kityminder.js') }}"></script>
 
 <script>
     var oldMinderData = @json($docDraft['content']);
