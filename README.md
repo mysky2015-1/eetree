@@ -9,7 +9,7 @@
 
 #### 构建
 * 前端构建
-    * npm run build:prod
+    * npm run production
 * 脑图编辑器构建
     * cd resources/vendor/kityminder-editor，运行 grunt build，完成后 dist 目录里就是可用运行的 kityminder-editor, 双击 index.html 即可打开运行示例
 
