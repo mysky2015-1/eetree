@@ -24,8 +24,8 @@
                                     <ul>
                                         <li>
                                             <div class="portrait">
-                                                <!-- <i class="fa fa-user-circle" aria-hidden="true"></i> -->
-                                                <img src="https://mubu.com/photo/f925e3ac-c912-4deb-8f02-8203116c846a.jpg@100w_100h">
+                                                <i class="fa fa-user-circle" aria-hidden="true"></i>
+                                                <!-- <img src="https://mubu.com/photo/f925e3ac-c912-4deb-8f02-8203116c846a.jpg@100w_100h"> -->
                                                 <p class="name">  {{ $doc->user->nickname }}</p>
                                             </div>
                                         </li>

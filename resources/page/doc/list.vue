@@ -7,13 +7,13 @@
         :to="{path: parentId === 0 ? '/doc/list/' : '/doc/list/' + parentId}"
       >&lt;&lt; 上一级</router-link>
       <b-button @click="newCategory">
-        <i class="fa fa-folder-open-o" aria-hidden="true"></i>新建文件夹
+        <i class="fa fa-folder-o" aria-hidden="true"></i>新建文件夹
       </b-button>
       <b-button @click="newDoc">
         <i class="fa fa-file-code-o" aria-hidden="true"></i>新建文档
       </b-button>
     </div>
-    <div class="col-md-2 panel-left">
+    <div class="col-md-2 list-panel-left">
       <div class="panel-heading panel-heading-current">
         <i class="fa fa-home" aria-hidden="true"></i>我的文档
       </div>
@@ -21,26 +21,68 @@
         <i class="fa fa-share-alt" aria-hidden="true"></i>我的分享
       </div>
     </div>
-    <div class="col-md-10 clearpadding">
+    <div class="col-md-10 clearpadding list-panel-right">
       <div class="panel panel-default">
+        <div class="list-panel-header">
+          <div class="list-name float-left">文件名</div>
+          <div class="list-last-time float-left">更新时间</div>
+          <div class="list-handle float-right">操作</div>
+        </div>
         <ul class="list-group clearpadding">
           <li class="list-group-item" v-for="row in categories" :key="'c' + row.id">
             <router-link :to="{path:'/doc/list/' + row.id}">{{ row.name }}</router-link>
-            <b-button class="float-right" @click="showMove(row, 'category')">移动到</b-button>
-            <b-button class="float-right" @click="editCategory(row)">重命名</b-button>
-            <b-button class="float-right" @click="delCategory(row)">删除</b-button>
+            <div class="list-handle-select dropdown float-right">
+              <a
+                class="dropdown-toggle"
+                href="#"
+                id="handleDropdown"
+                role="button"
+                data-toggle="dropdown"
+              >
+                <i class="fa fa-gear" aria-hidden="true"></i>
+              </a>
+              <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="handleDropdown">
+                <li @click="showMove(row, 'category')" class="line-bottom">
+                  <i class="fa fa-reply" aria-hidden="true"></i>
+                  移动到
+                </li>
+                <li @click="editCategory(row)">
+                  <i class="fa fa-mail-reply-all" aria-hidden="true"></i>重命名
+                </li>
+                <li @click="delCategory(row)">
+                  <i class="fa fa-trash-o" aria-hidden="true"></i>删除
+                </li>
+              </ul>
+            </div>
           </li>
           <li class="list-group-item" v-for="row in docs" :key="'d' + row.id">
-            <a v-if="row.status != 1" :href="'/doc/edit/' + row.id">{{ row.title }}</a>
+            <a v-if="row.status != 1" :href="'/doc/edit/' + row.id" class>{{ row.title }}</a>
             <span v-if="row.status == 1">{{ row.title }}</span>
             <span class="created-time">{{ row.created_at }}</span>
-            <a
-              class="btn float-right btn-secondary"
-              v-if="row.doc_id !== 0"
-              :href="'/doc/detail/' + row.doc_id"
-            >查看</a>
-            <b-button class="float-right" @click="showMove(row, 'doc')">移动到</b-button>
-            <b-button class="float-right" @click="delDoc(row)">删除</b-button>
+            <div class="list-handle-select dropdown float-right">
+              <a
+                class="dropdown-toggle"
+                href="#"
+                id="handleDropdown-d"
+                role="button"
+                data-toggle="dropdown"
+              >
+                <i class="fa fa-gear" aria-hidden="true"></i>
+              </a>
+              <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="handleDropdown-d">
+                <li @click="showMove(row, 'doc')" class="line-bottom">
+                  <i class="fa fa-reply" aria-hidden="true"></i>移动到
+                </li>
+                <li>
+                  <a v-if="row.doc_id !== 0" :href="'/doc/detail/' + row.doc_id">
+                    <i class="fa fa-envelope-open-o" aria-hidden="true"></i>查看
+                  </a>
+                </li>
+                <li @click="delDoc(row)">
+                  <i class="fa fa-trash-o" aria-hidden="true"></i>删除
+                </li>
+              </ul>
+            </div>
           </li>
         </ul>
         <div
