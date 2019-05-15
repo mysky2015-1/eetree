@@ -32,7 +32,7 @@ mix.js('resources/js/app.js', 'public/js')
    //    'resources/vendor/kityminder-editor/bower_components/kity/dist/kity.min.js',
    //    'resources/vendor/kityminder-editor/bower_components/hotbox/hotbox.js',
    //    'resources/vendor/kityminder-editor/bower_components/json-diff/json-diff.js',
-   //    // 'resources/vendor/kityminder-editor/node_modules/kityminder-core/dist/kityminder.core.min.js',
+   //    'resources/vendor/kityminder-editor/node_modules/kityminder-core/dist/kityminder.core.min.js',
    //    'resources/vendor/kityminder-editor/bower_components/color-picker/dist/color-picker.min.js',
    //    'resources/vendor/kityminder-editor/dist/kityminder.editor.min.js',
    // ], 'public/vendor/kityminder/kityminder.js')
@@ -43,11 +43,10 @@ mix.js('resources/js/app.js', 'public/js')
    //    'resources/vendor/kityminder-editor/node_modules/kityminder-core/dist/kityminder.core.css',
    //    'resources/vendor/kityminder-editor/bower_components/color-picker/dist/color-picker.min.css',
    //    'resources/vendor/kityminder-editor/dist/kityminder.editor.min.css',
-   //    'resources/font-awesome-4.7.0/css/font-awesome.min.css',
    // ], 'public/vendor/kityminder/kityminder.css')
    // .options({
    //    processCssUrls: false
-   // })
+   // });
    // .copyDirectory('resources/vendor/kityminder-editor/dist/images', 'public/vendor/kityminder/images')
    // .copy('resources/vendor/kityminder-editor/bower_components/bootstrap/dist/fonts/*', 'public/vendor/fonts/')
    // .copy('resources/font-awesome-4.7.0/fonts/*', 'public/vendor/fonts/')

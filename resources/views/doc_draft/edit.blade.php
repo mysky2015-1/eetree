@@ -10,6 +10,7 @@
 	<link href="favicon.ico" type="image/x-icon" rel="shortcut icon">
 
 	<link rel="stylesheet" href="{{ asset('vendor/kityminder/kityminder.css') }}" />
+    <link href="{{ asset('vendor/font-awesome-4.7.0/css/font-awesome.min.css') }}" rel="stylesheet">
     <style>
 		html, body {
 			margin: 0;
@@ -38,7 +39,7 @@
             color: #ccc;
             font-size: 12px;
         }
-        
+
         .editor-title .doc-name{
             font-size: 14px;
             width: 60%;
@@ -66,8 +67,8 @@
             color: #777;
             margin-right: 10px;
         }
-        
-        
+
+
 	</style>
 </head>
 <body ng-app="editDocApp" ng-controller="MainController">
