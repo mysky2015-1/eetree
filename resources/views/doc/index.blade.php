@@ -20,7 +20,7 @@
                             <div class="content-list">
                                 <div class="info">
                                     <a href="{{ route('doc.detail', ['doc' => $doc->id]) }}">{{ $doc->title }}</a>
-                                    <p>{{ $doc->description }}
+                                    <p>{{ $doc->description }}</p>
                                     <ul>
                                         <li>
                                             <div class="portrait">

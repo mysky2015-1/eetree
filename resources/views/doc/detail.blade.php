@@ -16,7 +16,7 @@
                 <h6 class="border-bottom border-gray pb-2 mb-0">我要评论</h6>
                 <!-- 未登录 -->
                 <div class="media  pt-3">
-                    <a href="#" class="btn btn-lg btn-outline-primary inner-center">登录后方可提问哦~</a>
+                    <a href="#" class="btn btn-outline-primary inner-center">登录后方可提问哦~</a>
                 </div>
                 <div class="media text-muted pt-3">
                     <!-- 已登录 -->

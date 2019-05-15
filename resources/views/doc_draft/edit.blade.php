@@ -10,7 +10,6 @@
 	<link href="favicon.ico" type="image/x-icon" rel="shortcut icon">
 
 	<link rel="stylesheet" href="{{ asset('vendor/kityminder/kityminder.css') }}" />
-
     <style>
 		html, body {
 			margin: 0;
@@ -24,16 +23,35 @@
 			height: 40px;
 			padding: 0 20px;
 		}
-        .editor-title .doc-name, .editor-title .doc-share {
+        .editor-title .doc-name, .editor-title .doc-share ,
+        .editor-title .doc-return-up,
+        .editor-title .doc-publish{
 			margin: 0 0 0 10px;
-			font-size: 14px;
 			line-height: 40px;
 			font-family: 'Hiragino Sans GB', 'Arial', 'Microsoft Yahei';
 			font-weight: normal;
-            float:left;
+            display:inline-block;
+            vertical-align: middle;
+            cursor: pointer;
+        }
+        .editor-title .doc-share ,.editor-title.doc-return-up{
+            color: #ccc;
+            font-size: 12px;
+        }
+        
+        .editor-title .doc-name{
+            font-size: 14px;
+            width: 60%;
+            text-align: center;
+            margin-left: 3rem;
         }
         .editor-title .doc-share {
             cursor: pointer;
+        }
+        .editor-title .fa{
+            font-size:14px;
+            margin-right:1rem;
+
         }
 		div.minder-editor-container {
 			position: absolute;
@@ -41,18 +59,28 @@
 			bottom: 0;
 			left: 0;
 			right: 0;
-		}
+        }
+        #xyModal input{
+            width: 80%;
+            padding: 5px 10px;
+            color: #777;
+            margin-right: 10px;
+        }
+        
+        
 	</style>
 </head>
 <body ng-app="editDocApp" ng-controller="MainController">
 @include('layouts.modal')
 <div class="editor-title">
-    <a class="" href="/home#/doc/list/{{ $docDraft['user_category_id'] ? $docDraft['user_category_id'] : '' }}">返回上级</a>
+    <a class="doc-return-up" href="/home#/doc/list/{{ $docDraft['user_category_id'] ? $docDraft['user_category_id'] : '' }}">
+    <i class="fa fa-reply" aria-hidden="true"></i>返回上级
+    </a>
+    <span class="doc-share"><i class="fa fa-share-alt" aria-hidden="true"></i>分享</span>
+    <span class="doc-publish"><i class="fa fa-file-text" aria-hidden="true"></i>提交文档</span>
     <h1 class="doc-name">
         {{ $docDraft['title'] }}
     </h1>
-    <span class="doc-share">分享</span>
-    <span class="doc-publish">提交文档</span>
 </div>
 <kityminder-editor on-init="initEditor(editor, minder)"></kityminder-editor>
 </body>

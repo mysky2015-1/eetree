@@ -25,6 +25,11 @@ a:active {
     text-decoration: none;
 }
 
+%color-text-default {
+    color: #777;
+}
+
+
 .navbar-laravel {
     background-color: #fff;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
@@ -157,7 +162,7 @@ a:active {
 
             .fa {
                 margin-right: 8px;
-                font-size: 19px;
+                font-size: 15px;
             }
         }
 
@@ -193,7 +198,7 @@ a:active {
 
             ul {
                 height: 20px;
-                color: #777;
+                @extend %color-text-default;
                 font-size: 13px;
                 margin-top: 5px;
                 margin-bottom: 0;
@@ -232,10 +237,40 @@ a:active {
 // detail-card
 .detail-card {
     padding: 2rem;
+
+    ul {
+        @extend %color-text-default;
+        list-style: none;
+
+        li {
+            padding-left: 20px;
+        }
+
+        img {
+            display: block;
+        }
+    }
+
+    ul,
+    li {
+        position: relative;
+    }
+
+    ul:before,
+    li:before {
+        content: "";
+        border: 3px solid #666;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        -ms-border-radius: 3px;
+        border-radius: 3px;
+    }
 }
 
 .detail-title {
     @extend %h3-title;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
 }
 
 // list -vue
@@ -269,7 +304,7 @@ a:active {
 
     .panel-heading {
         font-size: .95rem;
-        color: #777;
+        @extend %color-text-default;
 
         .fa {
             @extend %fa-list;
@@ -288,6 +323,7 @@ a:active {
     .list-panel-header {
         padding-bottom: 10px;
         border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+        overflow: hidden;
 
         .list-name {
             width: 50%;
@@ -305,11 +341,11 @@ a:active {
 
     .list-panel-header>div {
         padding-left: 2rem;
-        color: #777;
+        @extend %color-text-default;
     }
 
     .list-group {
-        padding-left: 0;
+        padding-left: 0 !important;
     }
 
     .list-group-item {
@@ -340,14 +376,18 @@ a:active {
     .list-handle-select {
         margin-right: 9rem;
 
+
         .dropdown-toggle {
             color: #ddd;
         }
 
         .dropdown-toggle:hover {
-            color: #777;
+            @extend %color-text-default;
         }
 
+        .dropdown-toggle::after {
+            display: none;
+        }
 
         .dropdown-menu {
             padding: 0 !important;
@@ -402,6 +442,15 @@ a:active {
 
     button {
         width: 150px;
+    }
+}
+
+.media {
+
+    a:link,
+    a:visited,
+    a:active {
+        color: #3490dc;
     }
 }
 
